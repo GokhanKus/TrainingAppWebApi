@@ -1,4 +1,6 @@
 
+using WebApi.ExtensionMethods;
+
 namespace WebApi
 {
 	public class Program
@@ -7,15 +9,15 @@ namespace WebApi
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
+			builder.Services.SqlConfiguration(builder.Configuration);
 			// Add services to the container.
 
-			builder.Services.AddControllers();
+			builder.Services.AddControllers().AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
 			var app = builder.Build();
-
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
@@ -23,7 +25,7 @@ namespace WebApi
 				app.UseSwaggerUI();
 			}
 
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 
 			app.UseAuthorization();
 
