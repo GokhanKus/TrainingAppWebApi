@@ -1,5 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using System.Xml;
 
 namespace Repositories.Context
 {
@@ -11,26 +13,15 @@ namespace Repositories.Context
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			// WorkoutExercise Configuration
-			modelBuilder.Entity<WorkoutExercise>()
-				.HasKey(we => new { we.WorkoutId, we.ExerciseId }); // Composite Key tanımlama
-
-			modelBuilder.Entity<WorkoutExercise>()
-				.HasOne(we => we.Workout)
-				.WithMany(w => w.WorkoutExercises)
-				.HasForeignKey(we => we.WorkoutId);
-
-			modelBuilder.Entity<WorkoutExercise>()
-				.HasOne(we => we.Exercise)
-				.WithMany(e => e.WorkoutExercises)
-				.HasForeignKey(we => we.ExerciseId);
-
-			// Diğer entity'ler için konfigürasyonlar buraya eklenebilir
+			//config.cs'leri calistiralim migration alabilmek icin gerekli
+			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+			base.OnModelCreating(modelBuilder);
+			
 		}
 		public DbSet<BodyMeasurement> BodyMeasurements { get; set; }
-		public DbSet<Exercise> Exercise { get; set; }
+		public DbSet<Exercise> Exercises { get; set; }
 		public DbSet<ExerciseCategory> ExerciseCategories { get; set; }
 		public DbSet<Workout> Workouts { get; set; }
-		public DbSet<WorkoutExercise> WorkoutExercises { get; set; }
+		public DbSet<WorkoutExercise> WorkoutExercises { get; set; }	
 	}
 }

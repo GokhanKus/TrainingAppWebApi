@@ -10,7 +10,6 @@
     <Folder Include="RepoContracts\" />
     <Folder Include="Extensions\" />
     <Folder Include="RepoConcretes\" />
-    <Folder Include="Config\" />
   </ItemGroup>
 
   <ItemGroup>

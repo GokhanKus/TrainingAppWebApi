@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repositories.Context;
 
@@ -11,9 +12,11 @@ using Repositories.Context;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20240814172022_SeedingDataAdded")]
+    partial class SeedingDataAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,8 +62,8 @@ namespace WebApi.Migrations
                         {
                             Id = 1,
                             BodyFatPercentage = 15f,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 500, DateTimeKind.Local).AddTicks(8951),
-                            Date = new DateTime(2024, 7, 14, 21, 6, 36, 500, DateTimeKind.Local).AddTicks(8962),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(964),
+                            Date = new DateTime(2024, 7, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(974),
                             MuscleMass = 35f,
                             WaistCircumference = 85f,
                             Weight = 70f
@@ -69,8 +72,8 @@ namespace WebApi.Migrations
                         {
                             Id = 2,
                             BodyFatPercentage = 16f,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 500, DateTimeKind.Local).AddTicks(8970),
-                            Date = new DateTime(2024, 6, 14, 21, 6, 36, 500, DateTimeKind.Local).AddTicks(8971),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(982),
+                            Date = new DateTime(2024, 6, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(982),
                             MuscleMass = 34f,
                             WaistCircumference = 87f,
                             Weight = 68f
@@ -79,8 +82,8 @@ namespace WebApi.Migrations
                         {
                             Id = 3,
                             BodyFatPercentage = 14f,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 500, DateTimeKind.Local).AddTicks(8973),
-                            Date = new DateTime(2024, 8, 11, 21, 6, 36, 500, DateTimeKind.Local).AddTicks(8974),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(984),
+                            Date = new DateTime(2024, 8, 11, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(985),
                             MuscleMass = 36f,
                             WaistCircumference = 84f,
                             Weight = 72f
@@ -89,8 +92,8 @@ namespace WebApi.Migrations
                         {
                             Id = 4,
                             BodyFatPercentage = 13.5f,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 500, DateTimeKind.Local).AddTicks(8978),
-                            Date = new DateTime(2024, 8, 4, 21, 6, 36, 500, DateTimeKind.Local).AddTicks(8979),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(991),
+                            Date = new DateTime(2024, 8, 4, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(991),
                             MuscleMass = 35.5f,
                             WaistCircumference = 83f,
                             Weight = 71f
@@ -129,14 +132,14 @@ namespace WebApi.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Exercise");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(5219),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(6036),
                             Description = "Lower body strength exercise",
                             Difficulty = 0,
                             Name = "Squat"
@@ -145,7 +148,7 @@ namespace WebApi.Migrations
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(5226),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(6042),
                             Description = "Upper body strength exercise",
                             Difficulty = 2,
                             Name = "Bench Press"
@@ -154,7 +157,7 @@ namespace WebApi.Migrations
                         {
                             Id = 3,
                             CategoryId = 2,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(5227),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(6044),
                             Description = "Cardio exercise",
                             Difficulty = 2,
                             Name = "Running"
@@ -163,7 +166,7 @@ namespace WebApi.Migrations
                         {
                             Id = 4,
                             CategoryId = 2,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(5229),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(6045),
                             Description = "Front crawl swimming style",
                             Difficulty = 1,
                             Name = "Freestyle Swimming"
@@ -172,7 +175,7 @@ namespace WebApi.Migrations
                         {
                             Id = 5,
                             CategoryId = 2,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(5230),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(6046),
                             Description = "Breaststroke swimming style",
                             Difficulty = 2,
                             Name = "Breaststroke Swimming"
@@ -181,7 +184,7 @@ namespace WebApi.Migrations
                         {
                             Id = 6,
                             CategoryId = 1,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(5232),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(6048),
                             Description = "Lower body and back strength exercise",
                             Difficulty = 3,
                             Name = "Deadlift"
@@ -213,28 +216,28 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(705),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(2321),
                             Description = "Strength training exercises",
                             Name = "Strength"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(711),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(2325),
                             Description = "Cardio exercises",
                             Name = "Cardio"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(712),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(2326),
                             Description = "Flexibility exercises",
                             Name = "Flexibility"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(713),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(2327),
                             Description = "Swimming exercises and styles",
                             Name = "Swimming"
                         });
@@ -271,8 +274,8 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(6817),
-                            Date = new DateTime(2024, 8, 4, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(6821),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(8358),
+                            Date = new DateTime(2024, 8, 4, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(8361),
                             Duration = 60,
                             Notes = "Leg day workout",
                             TotalCaloriesBurned = 500f
@@ -280,8 +283,8 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(6826),
-                            Date = new DateTime(2024, 8, 9, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(6827),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(8412),
+                            Date = new DateTime(2024, 8, 9, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(8412),
                             Duration = 45,
                             Notes = "Upper body workout",
                             TotalCaloriesBurned = 400f
@@ -289,8 +292,8 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(6829),
-                            Date = new DateTime(2024, 8, 7, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(6829),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(8415),
+                            Date = new DateTime(2024, 8, 7, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(8415),
                             Duration = 40,
                             Notes = "Freestyle swimming session",
                             TotalCaloriesBurned = 300f
@@ -298,8 +301,8 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedTime = new DateTime(2024, 8, 14, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(6831),
-                            Date = new DateTime(2024, 8, 11, 21, 6, 36, 501, DateTimeKind.Local).AddTicks(6831),
+                            CreatedTime = new DateTime(2024, 8, 14, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(8417),
+                            Date = new DateTime(2024, 8, 11, 20, 20, 21, 578, DateTimeKind.Local).AddTicks(8417),
                             Duration = 50,
                             Notes = "Breaststroke swimming session",
                             TotalCaloriesBurned = 350f

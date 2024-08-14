@@ -4,7 +4,6 @@ namespace Entities.Models
 {
 	public class WorkoutExercise
 	{
-		//public int Id { get; set; }
 		//workout ve exercise arasindaki link table (baglanti tablosu) ara tablo 
 		public int WorkoutId { get; set; }
 		public Workout? Workout { get; set; }
