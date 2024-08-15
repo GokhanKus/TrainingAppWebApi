@@ -1,6 +1,5 @@
 ﻿using Entities.BaseEntities;
 using Entities.Enums;
-using System.Text.Json.Serialization;
 
 namespace Entities.Models
 {
