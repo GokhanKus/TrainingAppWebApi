@@ -1,4 +1,4 @@
-
+using Newtonsoft.Json;
 using WebApi.ExtensionMethods;
 
 namespace WebApi
@@ -9,11 +9,18 @@ namespace WebApi
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			builder.Services.SqlConfiguration(builder.Configuration);
-			// Add services to the container.
+			builder.Services.AddControllers()
+				.AddNewtonsoftJson(opt =>
+				{
+					opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+					opt.SerializerSettings.DateFormatString = "dd/MM/yyyy";
+				})
+				.AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 
-			builder.Services.AddControllers().AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			builder.Services.SqlConfiguration(builder.Configuration);
+			builder.Services.RepositoryInjections();
+			builder.Services.ServiceInjections();
+
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 

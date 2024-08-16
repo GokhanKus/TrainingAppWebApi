@@ -1,4 +1,5 @@
 ﻿
+using Entities.DTOs.Exercise;
 using Entities.Models;
 using Repositories.UnitOfWork;
 
@@ -11,8 +12,16 @@ namespace Repositories.RepoConcretes
 		{
 			_unitOfWork = unitOfWork;
 		}
-		public async Task<Exercise> AddExerciseAsync(Exercise exercise)
+		public async Task<Exercise> AddExerciseAsync(ExerciseDtoForInsertion exerciseDto)
 		{
+			//TODO: Auto mapper eklenecek
+			var exercise = new Exercise
+			{
+				CategoryId = exerciseDto.CategoryId,
+				Name = exerciseDto.Name,
+				Description = exerciseDto.Description,
+				Difficulty = exerciseDto.Difficulty
+			};
 			await _unitOfWork.ExerciseRepository.AddOneExerciseAsync(exercise);
 			await _unitOfWork.SaveChangesAsync();
 			return exercise;
@@ -40,13 +49,14 @@ namespace Repositories.RepoConcretes
 				return exercise;
 			throw new ArgumentNullException("exercise you looked for couldn't found.");
 		}
-		public async Task UpdateExerciseAsync(Exercise exercise, bool trackChanges)
+		public async Task UpdateExerciseAsync(ExerciseDtoForUpdate exercise, bool trackChanges)
 		{
+			//TODO: Auto mapper eklenecek
 			var entity = await GetOneExerciseByIdAndCheckExist(exercise.Id, trackChanges);
 			entity.Name = exercise.Name;
 			entity.Description = exercise.Description;
-			entity.Category = exercise.Category;
 			entity.Difficulty = exercise.Difficulty;
+			entity.CategoryId = exercise.CategoryId;
 
 			//izlenen nesne degisiklerden sonra Update() olmadan da dogrudan save edilebilir
 			//_unitOfWork.ExerciseRepository.UpdateOneExercise(entity);
