@@ -6,7 +6,7 @@ namespace Repositories.RepoConcretes
 	{
 		Task<IEnumerable<ExerciseCategory>> GetAllExerciseCategoriesAsync(bool trackChanges);
 		Task<ExerciseCategory?> GetOneExerciseCategoryByIdAsync(int id, bool trackChanges);
-		Task<ExerciseCategory?> GetOneExerciseCategoryWithExercises(int id);
+		Task<ExerciseCategory?> GetOneExerciseCategoryWithExercisesAsync(int id);
 		Task AddOneExerciseCategory(ExerciseCategory exerciseCategory);
 		void UpdateOneExerciseCategory(ExerciseCategory exerciseCategory);
 		void DeleteOneExerciseCategory(ExerciseCategory exerciseCategory);

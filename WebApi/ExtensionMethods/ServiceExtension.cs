@@ -27,6 +27,7 @@ namespace WebApi.ExtensionMethods
 		public static void ServiceInjections(this IServiceCollection service)
 		{
 			service.AddScoped<IExerciseService, ExerciseService>();
+			service.AddScoped<IExerciseCategoryService, ExerciseCategoryService>();
 		}
 	}
 }

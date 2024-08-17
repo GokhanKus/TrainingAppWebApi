@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.DTOs.Exercise
+namespace Entities.DTOs.ExerciseCategory
 {
-	public record ExerciseDtoForUpdate : ExerciseDto
+	public record ExerciseCategoryDtoForInsertion : ExerciseCategoryDto
 	{
-        public int Id { get; init; }
-    }
+		
+	}
 }

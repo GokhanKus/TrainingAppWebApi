@@ -7,7 +7,7 @@ namespace Repositories.RepoConcretes
 {
 	public sealed class ExerciseCategoryRepository : BaseRepository<ExerciseCategory>, IExerciseCategoryRepository
 	{
-		public ExerciseCategoryRepository(RepositoryContext context) : base(context) {}
+		public ExerciseCategoryRepository(RepositoryContext context) : base(context) { }
 		public async Task AddOneExerciseCategory(ExerciseCategory exerciseCategory) => await AddAsync(exerciseCategory);
 		public void DeleteOneExerciseCategory(ExerciseCategory exerciseCategory) => Delete(exerciseCategory);
 		public void UpdateOneExerciseCategory(ExerciseCategory exerciseCategory) => Update(exerciseCategory);
@@ -19,7 +19,7 @@ namespace Repositories.RepoConcretes
 		{
 			return await GetByConditionAsync(ec => ec.Id.Equals(id), trackChanges);
 		}
-		public async Task<ExerciseCategory?> GetOneExerciseCategoryWithExercises(int id)
+		public async Task<ExerciseCategory?> GetOneExerciseCategoryWithExercisesAsync(int id)
 		{
 			return await _dbSet.Include(ec => ec.Exercises).FirstOrDefaultAsync(ec => ec.Id.Equals(id));
 		}

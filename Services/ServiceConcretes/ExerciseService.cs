@@ -1,5 +1,4 @@
-﻿
-using Entities.DTOs.Exercise;
+﻿using Entities.DTOs.Exercise;
 using Entities.Models;
 using Repositories.UnitOfWork;
 
@@ -40,7 +39,9 @@ namespace Repositories.RepoConcretes
 		public async Task<Exercise> GetOneExerciseByIdAsync(int id, bool trackChanges)
 		{
 			var exercise = await GetOneExerciseByIdAndCheckExist(id, trackChanges);
-			return exercise;
+			if (exercise is not null)
+				return exercise;
+			throw new ArgumentNullException("exercise you looked for couldn't found.");
 		}
 		public async Task<Exercise> GetOneExerciseWithCategoryAsync(int id)
 		{
@@ -64,10 +65,10 @@ namespace Repositories.RepoConcretes
 		}
 		private async Task<Exercise> GetOneExerciseByIdAndCheckExist(int id, bool trackChanges)
 		{
-			var exerciseToDelete = await _unitOfWork.ExerciseRepository.GetOneExerciseByIdAsync(id, trackChanges);
-			if (exerciseToDelete is null)
+			var exercise = await _unitOfWork.ExerciseRepository.GetOneExerciseByIdAsync(id, trackChanges);
+			if (exercise is null)
 				throw new ArgumentNullException("exercise you looked for couldn't found.");
-			return exerciseToDelete;
+			return exercise;
 		}
 	}
 }
