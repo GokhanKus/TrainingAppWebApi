@@ -1,4 +1,5 @@
-﻿using Entities.DTOs.Exercise;
+﻿using AutoMapper;
+using Entities.DTOs.Exercise;
 using Entities.Models;
 using Repositories.UnitOfWork;
 
@@ -7,20 +8,15 @@ namespace Repositories.RepoConcretes
 	public class ExerciseService : IExerciseService
 	{
 		private readonly IUnitOfWork _unitOfWork;
-		public ExerciseService(IUnitOfWork unitOfWork)
+		private readonly IMapper _mapper;
+		public ExerciseService(IUnitOfWork unitOfWork, IMapper mapper)
 		{
 			_unitOfWork = unitOfWork;
+			_mapper = mapper;
 		}
 		public async Task<Exercise> AddExerciseAsync(ExerciseDtoForInsertion exerciseDto)
 		{
-			//TODO: Auto mapper eklenecek
-			var exercise = new Exercise
-			{
-				CategoryId = exerciseDto.CategoryId,
-				Name = exerciseDto.Name,
-				Description = exerciseDto.Description,
-				Difficulty = exerciseDto.Difficulty
-			};
+			var exercise = _mapper.Map<Exercise>(exerciseDto);
 			await _unitOfWork.ExerciseRepository.AddOneExerciseAsync(exercise);
 			await _unitOfWork.SaveChangesAsync();
 			return exercise;
@@ -50,16 +46,12 @@ namespace Repositories.RepoConcretes
 				return exercise;
 			throw new ArgumentNullException("exercise you looked for couldn't found.");
 		}
-		public async Task UpdateExerciseAsync(ExerciseDtoForUpdate exercise, bool trackChanges)
+		public async Task UpdateExerciseAsync(ExerciseDtoForUpdate exerciseDto, bool trackChanges)
 		{
-			//TODO: Auto mapper eklenecek
-			var entity = await GetOneExerciseByIdAndCheckExist(exercise.Id, trackChanges);
-			entity.Name = exercise.Name;
-			entity.Description = exercise.Description;
-			entity.Difficulty = exercise.Difficulty;
-			entity.CategoryId = exercise.CategoryId;
+			var entity = await GetOneExerciseByIdAndCheckExist(exerciseDto.Id, trackChanges);
+			_mapper.Map(exerciseDto, entity);
 
-			//izlenen nesne degisiklerden sonra Update() olmadan da dogrudan save edilebilir
+			//izlenen nesne(trackChanges = true ise) degisiklerden sonra Update() olmadan da dogrudan save edilebilir
 			//_unitOfWork.ExerciseRepository.UpdateOneExercise(entity);
 			await _unitOfWork.SaveChangesAsync();
 		}

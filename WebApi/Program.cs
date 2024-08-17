@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Services.Mapper;
 using WebApi.ExtensionMethods;
 
 namespace WebApi
@@ -16,6 +17,8 @@ namespace WebApi
 					opt.SerializerSettings.DateFormatString = "dd/MM/yyyy";
 				})
 				.AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
+
+			builder.Services.AddAutoMapper(typeof(MappingProfile)); // services/Mapper/MappingProfile
 
 			builder.Services.SqlConfiguration(builder.Configuration);
 			builder.Services.RepositoryInjections();

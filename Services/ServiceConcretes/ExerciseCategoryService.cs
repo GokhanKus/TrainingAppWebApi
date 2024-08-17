@@ -1,23 +1,23 @@
-﻿using Entities.DTOs.ExerciseCategory;
+﻿using AutoMapper;
+using Entities.DTOs.ExerciseCategory;
 using Entities.Models;
 using Repositories.UnitOfWork;
+using System.Text;
 
 namespace Repositories.RepoConcretes
 {
 	public class ExerciseCategoryService : IExerciseCategoryService
 	{
 		private readonly IUnitOfWork _unitOfWork;
-		public ExerciseCategoryService(IUnitOfWork unitOfWork)
+		private readonly IMapper _mapper;
+		public ExerciseCategoryService(IUnitOfWork unitOfWork, IMapper mapper)
 		{
 			_unitOfWork = unitOfWork;
+			_mapper = mapper;
 		}
 		public async Task<ExerciseCategory> AddExerciseCategoryAsync(ExerciseCategoryDtoForInsertion exerciseCategoryDto)
 		{
-			var exerciseCategory = new ExerciseCategory
-			{
-				Description = exerciseCategoryDto.Description,
-				Name = exerciseCategoryDto.Name,
-			};
+			var exerciseCategory = _mapper.Map<ExerciseCategory>(exerciseCategoryDto);
 			await _unitOfWork.ExerciseCategoryRepository.AddOneExerciseCategory(exerciseCategory);
 			await _unitOfWork.SaveChangesAsync();
 			return exerciseCategory;
@@ -51,10 +51,9 @@ namespace Repositories.RepoConcretes
 		public async Task UpdateExerciseCategoryAsync(ExerciseCategoryDtoForUpdate exerciseCategoryDto, bool trackChanges)
 		{
 			var entity = await GetOneExerciseCategoryByIdAndCheckExist(exerciseCategoryDto.Id, trackChanges);
-			entity.Name = exerciseCategoryDto.Name;
-			entity.Description = exerciseCategoryDto.Description;
+			entity = _mapper.Map(exerciseCategoryDto, entity);
 
-			//izlenen nesne degisiklerden sonra Update() olmadan da dogrudan save edilebilir
+			//izlenen nesne(trackChanges = true ise) degisiklerden sonra Update() olmadan da dogrudan save edilebilir
 			//_unitOfWork.ExerciseCategoryRepository.UpdateOneExerciseCategory(entity);
 			await _unitOfWork.SaveChangesAsync();
 		}
