@@ -5,7 +5,7 @@ using Repositories.UnitOfWork;
 
 namespace Repositories.RepoConcretes
 {
-	public class ExerciseService : IExerciseService
+	public sealed class ExerciseService : IExerciseService
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;

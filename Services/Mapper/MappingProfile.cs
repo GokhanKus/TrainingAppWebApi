@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Entities.DTOs.BodyMeasurement;
 using Entities.DTOs.Exercise;
 using Entities.DTOs.ExerciseCategory;
 using Entities.Models;
@@ -11,9 +12,12 @@ namespace Services.Mapper
 		{
 			CreateMap<ExerciseDtoForUpdate, Exercise>().ReverseMap();
 			CreateMap<ExerciseDtoForInsertion, Exercise>();
-			
+
 			CreateMap<ExerciseCategoryDtoForInsertion, ExerciseCategory>().ReverseMap();
 			CreateMap<ExerciseCategoryDtoForUpdate, ExerciseCategory>();
+
+			CreateMap<BodyMeasurementDtoForUpdate, BodyMeasurement>().ReverseMap();
+			CreateMap<BodyMeasurementDtoForInsertion, BodyMeasurement>();
 		}
 	}
 }

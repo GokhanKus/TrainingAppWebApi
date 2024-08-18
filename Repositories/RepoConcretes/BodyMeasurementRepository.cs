@@ -8,29 +8,32 @@ namespace Repositories.RepoConcretes
 	{
 		public BodyMeasurementRepository(RepositoryContext context) : base(context) { }
 
-		public Task AddOneBodyMeasurementAsync(int userId, BodyMeasurement bodyMeasurement)
+		public async Task AddOneBodyMeasurementAsync(string userId, BodyMeasurement bodyMeasurement)
 		{
-			throw new NotImplementedException();
+			bodyMeasurement.UserId = userId;
+			await AddAsync(bodyMeasurement);
 		}
 
-		public void DeleteOneBodyMeasurement(int userId, BodyMeasurement bodyMeasurement)
+		public async Task<IEnumerable<BodyMeasurement>> GetAllBodyMeasurementsByUserIdAsync(string userId, bool trackChanges)
 		{
-			throw new NotImplementedException();
+			return await GetAllByConditionAsync(bm => bm.UserId == userId, trackChanges);
 		}
 
-		public Task<IEnumerable<BodyMeasurement>> GetAllBodyMeasurementsByUserIdAsync(int userId, bool trackChanges)
+		public async Task<BodyMeasurement?> GetOneBodyMeasurementByUserIdAsync(int id, string userId, bool trackChanges)
 		{
-			throw new NotImplementedException();
+			return await GetByConditionAsync(bm => bm.Id == id && bm.UserId == userId, trackChanges);
 		}
 
-		public Task<BodyMeasurement> GetOneBodyMeasurementByUserIdAsync(int userId, bool trackChanges)
+		public void UpdateOneBodyMeasurement(string userId, BodyMeasurement bodyMeasurement)
 		{
-			throw new NotImplementedException();
+			bodyMeasurement.UserId = userId;  // userId güncelleniyor
+			Update(bodyMeasurement);
 		}
 
-		public void UpdateOneBodyMeasurement(int userId, BodyMeasurement bodyMeasurement)
+		public void DeleteOneBodyMeasurement(string userId, BodyMeasurement bodyMeasurement)
 		{
-			throw new NotImplementedException();
+			bodyMeasurement.UserId = userId;  // userId kontrol ediliyor
+			Delete(bodyMeasurement);
 		}
 	}
 }

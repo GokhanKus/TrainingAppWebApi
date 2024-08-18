@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.DTOs.Exercise
 {
-	public record ExerciseDtoForUpdate : ExerciseDto
+	public sealed record ExerciseDtoForUpdate : ExerciseDto
 	{
         public int Id { get; init; }
     }

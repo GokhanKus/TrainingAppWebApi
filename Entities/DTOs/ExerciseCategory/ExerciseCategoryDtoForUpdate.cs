@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.DTOs.ExerciseCategory
 {
-	public record ExerciseCategoryDtoForUpdate : ExerciseCategoryDto
+	public sealed record ExerciseCategoryDtoForUpdate : ExerciseCategoryDto
 	{
 		public int Id { get; init; }
 	}

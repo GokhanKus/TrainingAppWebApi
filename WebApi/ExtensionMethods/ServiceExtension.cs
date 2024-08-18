@@ -30,6 +30,7 @@ namespace WebApi.ExtensionMethods
 		{
 			service.AddScoped<IExerciseService, ExerciseService>();
 			service.AddScoped<IExerciseCategoryService, ExerciseCategoryService>();
+			service.AddScoped<IBodyMeasurementService, BodyMeasurementService>();
 		}
 
 		public static void ConfigureIdentityDbContext(this IServiceCollection services)

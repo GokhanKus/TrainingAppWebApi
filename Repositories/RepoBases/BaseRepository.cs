@@ -23,11 +23,17 @@ namespace Repositories.RepoBases
 		   ? await _dbSet.OrderBy(e => e.Id).ToListAsync()
 		   : await _dbSet.AsNoTracking().OrderBy(e => e.Id).ToListAsync();
 		}
-		public Task<TEntity?> GetByConditionAsync(Expression<Func<TEntity, bool>> expression, bool trackChanges)
+		public async Task<TEntity?> GetByConditionAsync(Expression<Func<TEntity, bool>> expression, bool trackChanges)
 		{
 			return trackChanges
-				? _dbSet.FirstOrDefaultAsync(expression)
-				: _dbSet.AsNoTracking().FirstOrDefaultAsync(expression);
+				? await _dbSet.FirstOrDefaultAsync(expression)
+				: await _dbSet.AsNoTracking().FirstOrDefaultAsync(expression);
+		}
+		public async Task<IEnumerable<TEntity>> GetAllByConditionAsync(Expression<Func<TEntity, bool>> expression, bool trackChanges)
+		{
+			return trackChanges
+				? await _dbSet.Where(expression).ToListAsync()
+				: await _dbSet.AsNoTracking().Where(expression).ToListAsync();
 		}
 	}
 }

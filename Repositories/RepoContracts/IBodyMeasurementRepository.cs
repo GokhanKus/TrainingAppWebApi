@@ -5,10 +5,10 @@ namespace Repositories.RepoConcretes
 {
 	public interface IBodyMeasurementRepository : IBaseRepository<BodyMeasurement>
 	{
-		Task<IEnumerable<BodyMeasurement>> GetAllBodyMeasurementsByUserIdAsync(int userId, bool trackChanges);
-		Task<BodyMeasurement> GetOneBodyMeasurementByUserIdAsync(int userId, bool trackChanges);
-		Task AddOneBodyMeasurementAsync(int userId, BodyMeasurement bodyMeasurement);
-		void UpdateOneBodyMeasurement(int userId, BodyMeasurement bodyMeasurement);
-		void DeleteOneBodyMeasurement(int userId, BodyMeasurement bodyMeasurement);
+		Task<IEnumerable<BodyMeasurement>> GetAllBodyMeasurementsByUserIdAsync(string userId, bool trackChanges);
+		Task<BodyMeasurement?> GetOneBodyMeasurementByUserIdAsync(int id, string userId, bool trackChanges);
+		Task AddOneBodyMeasurementAsync(string userId, BodyMeasurement bodyMeasurement);
+		void UpdateOneBodyMeasurement(string userId, BodyMeasurement bodyMeasurement);
+		void DeleteOneBodyMeasurement(string userId, BodyMeasurement bodyMeasurement);
 	}
 }

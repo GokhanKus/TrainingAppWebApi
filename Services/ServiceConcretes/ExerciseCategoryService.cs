@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Repositories.RepoConcretes
 {
-	public class ExerciseCategoryService : IExerciseCategoryService
+	public sealed class ExerciseCategoryService : IExerciseCategoryService
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;

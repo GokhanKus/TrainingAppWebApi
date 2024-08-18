@@ -7,7 +7,7 @@ namespace Repositories.RepoConcretes
 {
 	//workout eklerken ait oldugu exerciseyi de ekleyelim (ara tablo)
 	//TODO: user eklendiginde ekleyecegiz
-	public class WorkoutService
+	public sealed class WorkoutService
 	{
 
 	}

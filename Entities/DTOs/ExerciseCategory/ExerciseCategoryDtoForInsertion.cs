@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.DTOs.ExerciseCategory
 {
-	public record ExerciseCategoryDtoForInsertion : ExerciseCategoryDto
+	public sealed record ExerciseCategoryDtoForInsertion : ExerciseCategoryDto
 	{
 		
 	}
