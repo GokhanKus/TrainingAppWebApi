@@ -9,9 +9,7 @@ namespace Entities.Models
 		public float BodyFatPercentage { get; set; }
 		public float MuscleMass { get; set; }
 		public float WaistCircumference { get; set; }
-
-		//Mic Identityden sonra eklenecek
-		//public int UserId { get; set; }
-		//public User User { get; set; }
+		public string? UserId { get; set; }
+		public AppUser? User { get; set; }
 	}
 }

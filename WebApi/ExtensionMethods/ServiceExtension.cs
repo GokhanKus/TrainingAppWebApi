@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Context;
 using Repositories.RepoConcretes;
 using Repositories.UnitOfWork;
@@ -28,6 +30,22 @@ namespace WebApi.ExtensionMethods
 		{
 			service.AddScoped<IExerciseService, ExerciseService>();
 			service.AddScoped<IExerciseCategoryService, ExerciseCategoryService>();
+		}
+
+		public static void ConfigureIdentityDbContext(this IServiceCollection services)
+		{
+			services.AddIdentity<AppUser, AppRole>(opt =>
+			{
+				opt.Password.RequireDigit = true; //kayit islemi sırasinda rakam zorunlulu
+				opt.Password.RequireUppercase = false;
+				opt.Password.RequireLowercase = false;
+				opt.Password.RequireNonAlphanumeric = false; //& % + gibi karakterler zorunlu olmasin
+				opt.Password.RequiredLength = 6; //min 6 karakter
+				opt.User.RequireUniqueEmail = true;//mailler unique olsun her userin maili kendine ait olsun vs.
+				opt.SignIn.RequireConfirmedAccount = false; //kayit isleminden sonra e posta onaylama zorunlulugu olmasin
+			})
+				.AddEntityFrameworkStores<RepositoryContext>()
+				.AddDefaultTokenProviders(); //jwt kullanacagiz ve sifre, mail, resetleme, degistirme, mail onaylama gibi islemler icin gereken token bilgisini üretmek icin AddDefaultTokenProviders().
 		}
 	}
 }
