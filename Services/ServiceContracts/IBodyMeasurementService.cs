@@ -10,6 +10,6 @@ namespace Repositories.RepoConcretes
 		Task<BodyMeasurement?> GetOneBodyMeasurementByUserIdAsync(int id, string userId, bool trackChanges);
 		Task AddOneBodyMeasurementAsync(string userId, BodyMeasurementDtoForInsertion bodyMeasurementDto);
 		Task UpdateOneBodyMeasurementAsync(string userId, BodyMeasurementDtoForUpdate bodyMeasurementDto, bool trackChanges);
-		Task DeleteOneBodyMeasurementAsync(int id, string userId, BodyMeasurement bodyMeasurement, bool trackChanges);
+		Task DeleteOneBodyMeasurementAsync(int id, string userId, bool trackChanges);
 	}
 }

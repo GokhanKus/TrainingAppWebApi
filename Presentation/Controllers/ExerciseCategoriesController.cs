@@ -1,9 +1,5 @@
-﻿using Entities.DTOs.Exercise;
-using Entities.DTOs.ExerciseCategory;
-using Entities.Models;
+﻿using Entities.DTOs.ExerciseCategory;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Repositories.Context;
 using Repositories.RepoConcretes;
 
 namespace Presentation.Controllers
@@ -40,7 +36,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpPut]
-		public async Task<IActionResult> UpdateOneExerciseCategoryAsync([FromBody] ExerciseCategoryDtoForUpdate exerciseCategoryDto)
+		public async Task<IActionResult> UpdateOneExerciseCategoryAsync([FromBody] WorkoutDtoForUpdate exerciseCategoryDto)
 		{
 			await _exerciseCategoryService.UpdateExerciseCategoryAsync(exerciseCategoryDto, true);
 			return Ok();

@@ -1,8 +1,5 @@
 ﻿using Entities.DTOs.Exercise;
-using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Repositories.Context;
 using Repositories.RepoConcretes;
 
 namespace Presentation.Controllers

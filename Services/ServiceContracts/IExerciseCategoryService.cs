@@ -11,7 +11,7 @@ namespace Repositories.RepoConcretes
 		Task<ExerciseCategory?> GetOneExerciseCategoryByIdAsync(int id, bool trackChanges);
 		Task<ExerciseCategory?> GetOneExerciseCategoryWithExercisesAsync(int id);
 		Task<ExerciseCategory> AddExerciseCategoryAsync(ExerciseCategoryDtoForInsertion exerciseCategoryDto);
-		Task UpdateExerciseCategoryAsync(ExerciseCategoryDtoForUpdate exerciseCategoryDto, bool trackChanges);
+		Task UpdateExerciseCategoryAsync(WorkoutDtoForUpdate exerciseCategoryDto, bool trackChanges);
 		Task DeleteExerciseCategoryAsync(int id, bool trackChanges);
 	}
 }

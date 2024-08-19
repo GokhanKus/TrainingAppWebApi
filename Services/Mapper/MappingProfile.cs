@@ -14,10 +14,13 @@ namespace Services.Mapper
 			CreateMap<ExerciseDtoForInsertion, Exercise>();
 
 			CreateMap<ExerciseCategoryDtoForInsertion, ExerciseCategory>().ReverseMap();
-			CreateMap<ExerciseCategoryDtoForUpdate, ExerciseCategory>();
+			CreateMap<WorkoutDtoForUpdate, ExerciseCategory>();
 
 			CreateMap<BodyMeasurementDtoForUpdate, BodyMeasurement>().ReverseMap();
 			CreateMap<BodyMeasurementDtoForInsertion, BodyMeasurement>();
+
+			CreateMap<WorkoutDtoForUpdate, Workout>().ReverseMap();
+			CreateMap<WorkoutDtoForInsertion, Workout>();
 		}
 	}
 }

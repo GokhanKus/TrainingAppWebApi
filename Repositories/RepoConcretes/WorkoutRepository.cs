@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Context;
 using Repositories.RepoBases;
 
@@ -10,29 +11,37 @@ namespace Repositories.RepoConcretes
 		{
 		}
 
-		public Task AddWorkoutAsync(int userId, Workout workout)
+		public async Task AddWorkoutAsync(string userId, Workout workout)
 		{
-			throw new NotImplementedException();
+			workout.UserId = userId;
+			await AddAsync(workout);
 		}
 
-		public void DeleteWorkout(int userId, Workout workout)
+		public void DeleteWorkout(string userId, Workout workout)
 		{
-			throw new NotImplementedException();
+			workout.UserId = userId;
+			Delete(workout);
 		}
 
-		public Task<IEnumerable<Workout>> GetAllWorkoutsByUserIdAsync(int userId, bool trackChanges)
+		public async Task<IEnumerable<Workout>> GetAllWorkoutsByUserIdAsync(string userId, bool trackChanges)
 		{
-			throw new NotImplementedException();
+			return await GetAllByConditionAsync(w => w.UserId == userId, trackChanges);
 		}
 
-		public Task<Workout> GetOneWorkoutByUserIdAsync(int userId, bool trackChanges)
+		public async Task<Workout?> GetOneWorkoutByUserIdAsync(int id, string userId, bool trackChanges)
 		{
-			throw new NotImplementedException();
+			return await GetByConditionAsync(w => w.Id == id && w.UserId == userId, trackChanges);
 		}
 
-		public void UpdateWorkout(int userId, Workout workout)
+		public async Task<Workout?> GetOneWorkoutWithExercises(int id, string userId)
 		{
-			throw new NotImplementedException();
+			return await _dbSet.Include(w => w.WorkoutExercises).ThenInclude(we => we.Exercise).FirstOrDefaultAsync(w => w.Id == id && w.UserId == userId);
+		}
+
+		public void UpdateWorkout(string userId, Workout workout)
+		{
+			workout.UserId = userId;
+			Update(workout);
 		}
 	}
 }
