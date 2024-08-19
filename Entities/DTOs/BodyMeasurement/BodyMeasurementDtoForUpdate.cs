@@ -8,6 +8,6 @@ namespace Entities.DTOs.BodyMeasurement
 {
 	public sealed record BodyMeasurementDtoForUpdate : BodyMeasurementDto
 	{
-		public int Id { get; set; }
+		public int Id { get; init; }
 	}
 }

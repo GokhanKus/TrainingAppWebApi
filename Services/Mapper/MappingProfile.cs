@@ -2,6 +2,7 @@
 using Entities.DTOs.BodyMeasurement;
 using Entities.DTOs.Exercise;
 using Entities.DTOs.ExerciseCategory;
+using Entities.DTOs.WorkoutExercise;
 using Entities.Models;
 
 namespace Services.Mapper
@@ -19,8 +20,14 @@ namespace Services.Mapper
 			CreateMap<BodyMeasurementDtoForUpdate, BodyMeasurement>().ReverseMap();
 			CreateMap<BodyMeasurementDtoForInsertion, BodyMeasurement>();
 
-			CreateMap<WorkoutDtoForUpdate, Workout>().ReverseMap();
+			//CreateMap<WorkoutDtoForUpdate, Workout>().ReverseMap();
+
+			//CreateMap<WorkoutDtoForInsertion, Workout>()
+			//	.ForMember(dest => dest.WorkoutExercises, opt => opt.MapFrom(src => src.WorkoutExercises));
 			CreateMap<WorkoutDtoForInsertion, Workout>();
+
+			// WorkoutExerciseDtoForInsertion -> WorkoutExercise
+			CreateMap<WorkoutExerciseDtoForInsertion, WorkoutExercise>();
 		}
 	}
 }

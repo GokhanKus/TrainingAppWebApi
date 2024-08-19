@@ -4,7 +4,6 @@ namespace Entities.Models
 {
 	public class Workout : BaseEntity
 	{
-		public DateTime Date { get; set; }
 		public int Duration { get; set; }
 		public float TotalCaloriesBurned { get; set; }
 		public string? Notes { get; set; }

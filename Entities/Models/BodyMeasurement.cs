@@ -4,7 +4,6 @@ namespace Entities.Models
 {
 	public class BodyMeasurement : BaseEntity
 	{
-		public DateTime Date { get; set; }
 		public float Weight { get; set; }
 		public float BodyFatPercentage { get; set; }
 		public float MuscleMass { get; set; }

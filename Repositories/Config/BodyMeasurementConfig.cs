@@ -14,14 +14,13 @@ namespace Repositories.Config
 			.OnDelete(DeleteBehavior.Cascade); //user silinirse user'a ait olan beden ölçüm bilgileri de silinsin
 
 			// Date kolonu üzerinde bir indeks..
-			// Bu kod, veritabanında BodyMeasurement tablosundaki Date ve weight kolonuna bir indeks ekler. Böylece, tarihe, agirliga göre yapılan sorgular çok daha hızlı çalışır.
-			builder.HasIndex(bm => new { bm.Date, bm.Weight });
+			// Bu kod, veritabanında BodyMeasurement tablosundaki weight kolonuna bir indeks ekler. Böylece, agirliga göre yapılan sorgular çok daha hızlı çalışır.
+			builder.HasIndex(bm => bm.Weight);
 
 			builder.HasData(
 			new BodyMeasurement
 			{
 				Id = 1,
-				Date = DateTime.Now.AddMonths(-1),
 				Weight = 70,
 				BodyFatPercentage = 15,
 				MuscleMass = 35,
@@ -31,7 +30,6 @@ namespace Repositories.Config
 			new BodyMeasurement
 			{
 				Id = 2,
-				Date = DateTime.Now.AddMonths(-2),
 				Weight = 68,
 				BodyFatPercentage = 16,
 				MuscleMass = 34,
@@ -41,7 +39,6 @@ namespace Repositories.Config
 			new BodyMeasurement
 			{
 				Id = 3,
-				Date = DateTime.Now.AddDays(-3),
 				Weight = 72,
 				BodyFatPercentage = 14,
 				MuscleMass = 36,
@@ -51,7 +48,6 @@ namespace Repositories.Config
 			new BodyMeasurement
 			{
 				Id = 4,
-				Date = DateTime.Now.AddDays(-10),
 				Weight = 71,
 				BodyFatPercentage = 13.5f,
 				MuscleMass = 35.5f,

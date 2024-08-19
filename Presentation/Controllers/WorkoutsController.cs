@@ -68,17 +68,6 @@ namespace Presentation.Controllers
 			return Ok(workoutDto);
 		}
 
-		[HttpPut]
-		public async Task<IActionResult> UpdateWorkoutAsync([FromBody] WorkoutDtoForUpdate workoutDto)
-		{
-			//var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			//if (userId == null)
-			//	return Unauthorized();
-
-			await _workoutService.UpdateOneWorkoutAsync(johnDoeId, workoutDto, true);
-			return NoContent();
-		}
-
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteWorkoutAsync([FromRoute] int id)
 		{

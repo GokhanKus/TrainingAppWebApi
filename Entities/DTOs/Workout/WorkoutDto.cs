@@ -12,6 +12,5 @@ namespace Entities.DTOs.ExerciseCategory
 		public int Duration { get; set; }
 		public float TotalCaloriesBurned { get; set; }
 		public string? Notes { get; set; }
-		//public ICollection<WorkoutExercise>? WorkoutExercises { get; set; }
 	}
 }

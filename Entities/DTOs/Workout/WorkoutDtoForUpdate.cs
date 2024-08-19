@@ -8,6 +8,6 @@ namespace Entities.DTOs.ExerciseCategory
 {
 	public sealed record WorkoutDtoForUpdate : WorkoutDto
 	{
-		public int Id { get; set; }
+		public int Id { get; init; }
 	}
 }

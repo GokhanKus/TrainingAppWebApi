@@ -16,6 +16,7 @@ namespace WebApi.ExtensionMethods
 			{
 				options.UseSqlServer(connectionString, migr => migr.MigrationsAssembly(nameof(WebApi)));
 				options.EnableSensitiveDataLogging(true);//app gelistirme asamasinda username password gibi hassas bilgileri loglara yansitmaya ihtiyac duyabiliriz. simdilik true yapalim
+				//options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 			});
 		}
 		public static void RepositoryInjections(this IServiceCollection service)

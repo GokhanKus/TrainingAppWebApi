@@ -7,8 +7,6 @@ using Repositories.UnitOfWork;
 
 namespace Repositories.RepoConcretes
 {
-	//workout eklerken ait oldugu exerciseyi de ekleyelim (ara tablo)
-	//TODO: user eklendiginde ekleyecegiz
 	public sealed class WorkoutService : IWorkoutService
 	{
 		private readonly IUnitOfWork _unitOfWork;
@@ -21,6 +19,20 @@ namespace Repositories.RepoConcretes
 		public async Task AddOneWorkoutAsync(string userId, WorkoutDtoForInsertion workoutDto)
 		{
 			var workout = _mapper.Map<Workout>(workoutDto);
+			workout.UserId = userId;
+
+			// WorkoutExercise entity'lerini mapleyip workout.WorkoutExercises listesine ekle
+			var workoutExercises = _mapper.Map<List<WorkoutExercise>>(workoutDto.WorkoutExercises);
+
+			// Bu entity'leri workout ile ilişkilendir
+			foreach (var workoutExercise in workoutExercises)
+			{
+				workoutExercise.Workout = workout;  // Workout ile ilişkilendir
+			}
+
+			workout.WorkoutExercises = workoutExercises;
+
+			// Workout'u repository'e ekle
 			await _unitOfWork.WorkoutRepository.AddWorkoutAsync(userId, workout);
 			await _unitOfWork.SaveChangesAsync();
 		}
@@ -53,12 +65,6 @@ namespace Repositories.RepoConcretes
 				throw new ArgumentNullException("workoutWithExercise not found");
 
 			return workoutWithExercise;
-		}
-		public async Task UpdateOneWorkoutAsync(string userId, WorkoutDtoForUpdate workoutDto, bool trackChanges)
-		{
-			var existingWorkout = await GetOneWorkoutAndCheckExist(workoutDto.Id, userId, trackChanges);
-			_mapper.Map(workoutDto, existingWorkout);
-			await _unitOfWork.SaveChangesAsync();
 		}
 		private async Task<Workout?> GetOneWorkoutAndCheckExist(int id, string userId, bool trackChanges)
 		{

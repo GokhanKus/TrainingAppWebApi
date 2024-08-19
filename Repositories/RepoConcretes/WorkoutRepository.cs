@@ -13,7 +13,6 @@ namespace Repositories.RepoConcretes
 
 		public async Task AddWorkoutAsync(string userId, Workout workout)
 		{
-			workout.UserId = userId;
 			await AddAsync(workout);
 		}
 
