@@ -3,7 +3,7 @@ using Entities.DTOs.Exercise;
 using Entities.DTOs.ExerciseCategory;
 using Entities.Models;
 
-namespace Repositories.RepoConcretes
+namespace Services.ServiceConcretes
 {
 	public interface IExerciseCategoryService
 	{

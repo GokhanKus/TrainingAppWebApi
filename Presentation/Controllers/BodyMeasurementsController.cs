@@ -2,7 +2,7 @@
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Repositories.RepoConcretes;
+using Services.ServiceConcretes;
 using System.Security.Claims;
 
 namespace Presentation.Controllers
@@ -14,6 +14,8 @@ namespace Presentation.Controllers
 		//henuz user login, jwt token veya cookie islemleri yapilmadigi icin userId manuel olarak biz verelim, ilerde dinamik olarak userId'i ClaimTypes.NameIdentifier ile alacagiz.
 		static string johnDoeId = "a3058765-ecf0-403e-9d48-08b38d4888ab";
 		static string janeDoeId = "8cee140a-65fd-495d-970b-5315a6f3e7b2";
+		static string someUserId = "073c467a-491d-4f4f-952f-df031e8fdb14";
+
 		private readonly IBodyMeasurementService _bodyMeasurementService;
 		private readonly UserManager<AppUser> _userManager;
 		public BodyMeasurementsController(IBodyMeasurementService bodyMeasurementService, UserManager<AppUser> userManager)
@@ -26,7 +28,7 @@ namespace Presentation.Controllers
 		public async Task<IActionResult> GetAllBodyMeasurementsAsync()
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Kullanıcı Id alınıyor
-			var measurementWithUser = await _bodyMeasurementService.GetAllBodyMeasurementsByUserIdAsync(johnDoeId, false);
+			var measurementWithUser = await _bodyMeasurementService.GetAllBodyMeasurementsByUserIdAsync(someUserId, false);
 			return Ok(measurementWithUser);
 		}
 
@@ -39,7 +41,7 @@ namespace Presentation.Controllers
 			//	return Unauthorized();
 
 			// Route'dan gelen id'yi ve userId'yi kullanarak veri alıyoruz
-			var measurementWithUser = await _bodyMeasurementService.GetOneBodyMeasurementByUserIdAsync(id, johnDoeId, false);
+			var measurementWithUser = await _bodyMeasurementService.GetOneBodyMeasurementByUserIdAsync(id, someUserId, false);
 
 			if (measurementWithUser == null)
 				return NotFound();
@@ -54,7 +56,7 @@ namespace Presentation.Controllers
 			//if (userId == null)
 			//	return Unauthorized();
 
-			await _bodyMeasurementService.AddOneBodyMeasurementAsync(johnDoeId, bodyMeasurementDto);
+			await _bodyMeasurementService.AddOneBodyMeasurementAsync(someUserId, bodyMeasurementDto);
 			return Ok(bodyMeasurementDto);
 		}
 
@@ -66,7 +68,7 @@ namespace Presentation.Controllers
 			//	return Unauthorized();
 
 			//bodyMeasurementDto.Id = id;
-			await _bodyMeasurementService.UpdateOneBodyMeasurementAsync(johnDoeId, bodyMeasurementDto, true);
+			await _bodyMeasurementService.UpdateOneBodyMeasurementAsync(someUserId, bodyMeasurementDto, true);
 			return NoContent();
 		}
 
@@ -77,7 +79,7 @@ namespace Presentation.Controllers
 			//if (userId == null)
 			//	return Unauthorized();
 
-			await _bodyMeasurementService.DeleteOneBodyMeasurementAsync(id, johnDoeId, false);
+			await _bodyMeasurementService.DeleteOneBodyMeasurementAsync(id, someUserId, false);
 			return NoContent();
 		}
 	}

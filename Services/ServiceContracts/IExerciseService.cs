@@ -1,7 +1,7 @@
 ﻿using Entities.DTOs.Exercise;
 using Entities.Models;
 
-namespace Repositories.RepoConcretes
+namespace Services.ServiceConcretes
 {
 	public interface IExerciseService
 	{

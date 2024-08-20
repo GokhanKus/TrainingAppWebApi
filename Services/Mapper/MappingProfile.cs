@@ -2,6 +2,7 @@
 using Entities.DTOs.BodyMeasurement;
 using Entities.DTOs.Exercise;
 using Entities.DTOs.ExerciseCategory;
+using Entities.DTOs.User;
 using Entities.DTOs.WorkoutExercise;
 using Entities.Models;
 
@@ -28,6 +29,8 @@ namespace Services.Mapper
 
 			// WorkoutExerciseDtoForInsertion -> WorkoutExercise
 			CreateMap<WorkoutExerciseDtoForInsertion, WorkoutExercise>();
+
+			CreateMap<UserDtoForRegistration, AppUser>();
 		}
 	}
 }

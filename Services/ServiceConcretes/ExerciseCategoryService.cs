@@ -2,9 +2,8 @@
 using Entities.DTOs.ExerciseCategory;
 using Entities.Models;
 using Repositories.UnitOfWork;
-using System.Text;
 
-namespace Repositories.RepoConcretes
+namespace Services.ServiceConcretes
 {
 	public sealed class ExerciseCategoryService : IExerciseCategoryService
 	{

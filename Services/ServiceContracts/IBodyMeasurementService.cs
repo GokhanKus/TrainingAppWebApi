@@ -1,9 +1,8 @@
-﻿
-using Entities.DTOs.BodyMeasurement;
+﻿using Entities.DTOs.BodyMeasurement;
 using Entities.Models;
 
-namespace Repositories.RepoConcretes
-{
+namespace Services.ServiceConcretes
+	{
 	public interface IBodyMeasurementService
 	{
 		Task<IEnumerable<BodyMeasurement>> GetAllBodyMeasurementsByUserIdAsync(string userId, bool trackChanges);

@@ -2,7 +2,7 @@
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Repositories.RepoConcretes;
+using Services.ServiceConcretes;
 
 namespace Presentation.Controllers
 {
@@ -12,6 +12,8 @@ namespace Presentation.Controllers
 	{
 		static string johnDoeId = "a3058765-ecf0-403e-9d48-08b38d4888ab";
 		static string janeDoeId = "8cee140a-65fd-495d-970b-5315a6f3e7b2";
+		static string someUserId = "073c467a-491d-4f4f-952f-df031e8fdb14";
+
 		private readonly IWorkoutService _workoutService;
 		private readonly UserManager<AppUser> _userManager;
 		public WorkoutsController(IWorkoutService workoutService, UserManager<AppUser> userManager)
@@ -24,7 +26,7 @@ namespace Presentation.Controllers
 		public async Task<IActionResult> GetAllWorkoutsAsync()
 		{
 			//var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Kullanıcı Id alınıyor
-			var measurementWithUser = await _workoutService.GetAllWorkoutByUserIdAsync(johnDoeId, false);
+			var measurementWithUser = await _workoutService.GetAllWorkoutByUserIdAsync(someUserId, false);
 			return Ok(measurementWithUser);
 		}
 
@@ -35,7 +37,7 @@ namespace Presentation.Controllers
 			//if (userId == null)
 			//	return Unauthorized();
 
-			var workout = await _workoutService.GetOneWorkoutByUserIdAsync(id, johnDoeId, false);
+			var workout = await _workoutService.GetOneWorkoutByUserIdAsync(id, someUserId, false);
 
 			if (workout == null)
 				return NotFound();
@@ -49,7 +51,7 @@ namespace Presentation.Controllers
 			//if (userId == null)
 			//	return Unauthorized();
 
-			var workoutWithExercise = await _workoutService.GetOneWorkoutWithExercises(id, johnDoeId);
+			var workoutWithExercise = await _workoutService.GetOneWorkoutWithExercises(id, someUserId);
 
 			if (workoutWithExercise == null)
 				return NotFound();
@@ -64,7 +66,7 @@ namespace Presentation.Controllers
 			//if (userId == null)
 			//	return Unauthorized();
 
-			await _workoutService.AddOneWorkoutAsync(johnDoeId, workoutDto);
+			await _workoutService.AddOneWorkoutAsync(someUserId, workoutDto);
 			return Ok(workoutDto);
 		}
 
@@ -75,7 +77,7 @@ namespace Presentation.Controllers
 			//if (userId == null)
 			//	return Unauthorized();
 
-			await _workoutService.DeleteOneWorkoutAsync(id, johnDoeId, false);
+			await _workoutService.DeleteOneWorkoutAsync(id, someUserId, false);
 			return NoContent();
 		}
 	}

@@ -1,6 +1,6 @@
 ﻿using Entities.DTOs.Exercise;
 using Microsoft.AspNetCore.Mvc;
-using Repositories.RepoConcretes;
+using Services.ServiceConcretes;
 
 namespace Presentation.Controllers
 {

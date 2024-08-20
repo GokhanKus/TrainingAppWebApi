@@ -3,7 +3,7 @@ using Entities.DTOs.Exercise;
 using Entities.Models;
 using Repositories.UnitOfWork;
 
-namespace Repositories.RepoConcretes
+namespace Services.ServiceConcretes
 {
 	public sealed class ExerciseService : IExerciseService
 	{

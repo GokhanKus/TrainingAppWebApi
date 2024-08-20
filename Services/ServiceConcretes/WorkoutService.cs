@@ -1,11 +1,9 @@
-﻿
-using AutoMapper;
-using Entities.DTOs.Exercise;
+﻿using AutoMapper;
 using Entities.DTOs.ExerciseCategory;
 using Entities.Models;
 using Repositories.UnitOfWork;
 
-namespace Repositories.RepoConcretes
+namespace Services.ServiceConcretes
 {
 	public sealed class WorkoutService : IWorkoutService
 	{

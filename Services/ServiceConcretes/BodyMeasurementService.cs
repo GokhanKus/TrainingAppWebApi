@@ -1,12 +1,9 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Entities.DTOs.BodyMeasurement;
 using Entities.Models;
-using Microsoft.AspNetCore.Identity;
 using Repositories.UnitOfWork;
-using System.Security.Claims;
 
-namespace Repositories.RepoConcretes
+namespace Services.ServiceConcretes
 {
 	public sealed class BodyMeasurementService : IBodyMeasurementService
 	{
