@@ -11,6 +11,7 @@ namespace Services.ServiceConcretes
 		private readonly UserManager<AppUser> _userManager;
 		private readonly IMapper _mapper;
 		//private readonly IConfiguration _configuration;
+		private AppUser? _user;
 		public AuthService(IMapper mapper, UserManager<AppUser> userManager)
 		{
 			_userManager = userManager;
@@ -23,7 +24,7 @@ namespace Services.ServiceConcretes
 			var result = await _userManager.CreateAsync(user, userForRegistrationDto.Password!);
 
 			if (result.Succeeded)
-				await _userManager.AddToRolesAsync(user, userForRegistrationDto.Roles);
+				await _userManager.AddToRoleAsync(user, "User");
 
 			return result;
 		}
@@ -37,6 +38,17 @@ namespace Services.ServiceConcretes
 			var result = await _userManager.DeleteAsync(user);
 			return result;
 
+		}
+		public async Task<bool> ValidateUser(UserDtoForAuthentication userForAuthDto)
+		{
+			_user = await _userManager.FindByNameAsync(userForAuthDto.UserName!);
+			var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuthDto.Password!));
+
+			//ilerde hata fırlatmak yerine logger ile kayit tutulabilir 
+			if (!result) 
+				throw new Exception("Authentication failed. Wrong username or password.");
+
+			return result;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Entities.DTOs.BodyMeasurement;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services.ServiceConcretes;
@@ -7,6 +8,7 @@ using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
+	[Authorize]
 	[Route("api/body-measurement")]
 	[ApiController]
 	public class BodyMeasurementsController : ControllerBase

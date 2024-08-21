@@ -1,4 +1,5 @@
 ﻿using Entities.DTOs.Exercise;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.ServiceConcretes;
 
@@ -36,6 +37,7 @@ namespace Presentation.Controllers
 			return Ok(exercise);
 		}
 
+		[Authorize(Roles = "Admin")]
 		[HttpPut]
 		public async Task<IActionResult> UpdateOneExerciseAsync([FromBody] ExerciseDtoForUpdate exerciseDto)
 		{
@@ -43,6 +45,7 @@ namespace Presentation.Controllers
 			return Ok();
 		}
 
+		[Authorize(Roles = "Admin")]
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> DeleteOneExerciseAsync(int id)
 		{
@@ -50,6 +53,7 @@ namespace Presentation.Controllers
 			return NoContent();
 		}
 
+		[Authorize(Roles = "Admin")]
 		[HttpPost]
 		public async Task<IActionResult> CreateOneExerciseAsync([FromBody] ExerciseDtoForInsertion exerciseDto)
 		{

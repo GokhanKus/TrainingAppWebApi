@@ -24,8 +24,9 @@ namespace WebApi
 			builder.Services.RepositoryInjections();
 			builder.Services.ServiceInjections();
 
-			builder.Services.AddAuthentication();
 			builder.Services.ConfigureIdentityDbContext();
+			builder.Services.ConfigureJWT(builder.Configuration);
+
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 

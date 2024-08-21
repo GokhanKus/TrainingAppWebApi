@@ -1,11 +1,14 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Repositories.Context;
 using Repositories.RepoConcretes;
 using Repositories.UnitOfWork;
 using Services.ServiceConcretes;
 using Services.ServiceContracts;
+using System.Text;
 
 namespace WebApi.ExtensionMethods
 {
@@ -38,9 +41,9 @@ namespace WebApi.ExtensionMethods
 			service.AddScoped<IAuthService, AuthService>();
 		}
 
-		public static void ConfigureIdentityDbContext(this IServiceCollection services)
+		public static void ConfigureIdentityDbContext(this IServiceCollection service)
 		{
-			services.AddIdentity<AppUser, AppRole>(opt =>
+			service.AddIdentity<AppUser, AppRole>(opt =>
 			{
 				opt.Password.RequireDigit = true; //kayit islemi sırasinda rakam zorunlulu
 				opt.Password.RequireUppercase = false;
@@ -53,5 +56,28 @@ namespace WebApi.ExtensionMethods
 				.AddEntityFrameworkStores<RepositoryContext>()
 				.AddDefaultTokenProviders(); //jwt kullanacagiz ve sifre, mail, resetleme, degistirme, mail onaylama gibi islemler icin gereken token bilgisini üretmek icin AddDefaultTokenProviders().
 		}
-	}
+		public static void ConfigureJWT(this IServiceCollection service, IConfiguration config)
+		{
+			var jwtSettings = config.GetSection("jwtSettings");
+			var secretKey = jwtSettings.GetValue<string>("secretKey"); //jwtSettings["secretKey"];
+			//authentication icin default semalar
+			service.AddAuthentication(opt =>
+			{
+				opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(options =>
+			{
+				options.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					ValidIssuer = jwtSettings["validIssuer"],
+					ValidAudience = jwtSettings["validAudience"],
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+				};
+			});
+		}
+    }
 }

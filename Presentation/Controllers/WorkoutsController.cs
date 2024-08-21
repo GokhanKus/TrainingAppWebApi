@@ -1,11 +1,13 @@
 ﻿using Entities.DTOs.ExerciseCategory;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services.ServiceConcretes;
 
 namespace Presentation.Controllers
 {
+	[Authorize]
 	[Route("api/workouts")]
 	[ApiController]
 	public class WorkoutsController : ControllerBase

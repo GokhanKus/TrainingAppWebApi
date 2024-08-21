@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Entities.DTOs.User
 {
@@ -28,7 +23,7 @@ namespace Entities.DTOs.User
 		[DataType(DataType.Password)]
 		[Compare(nameof(Password), ErrorMessage = "Passwords do not match")]
 		public string? ConfirmPassword { get; init; }
-		public ICollection<string>? Roles { get; init; }
+		//public ICollection<string>? Roles { get; init; }
 		//public HashSet<string>? Roles { get; set; } = new HashSet<string>();
 	}
 }
