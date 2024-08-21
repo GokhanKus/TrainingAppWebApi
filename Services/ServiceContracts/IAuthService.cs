@@ -8,5 +8,6 @@ namespace Services.ServiceContracts
 		Task<IdentityResult> RegisterUser(UserDtoForRegistration userForRegistrationDto);
 		Task<IdentityResult> DeleteUserByEmail(string email);
 		Task<bool> ValidateUser(UserDtoForAuthentication userForAuthDto);
+		Task<string> CreateToken();
 	}
 }
