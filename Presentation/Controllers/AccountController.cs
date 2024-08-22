@@ -48,5 +48,17 @@ namespace Presentation.Controllers
 			}
 			return StatusCode(201); //return Created();
 		}
+
+		[HttpPost("login")]
+		public async Task<IActionResult> Authenticate([FromBody] UserDtoForAuthentication userForAuthDto)
+		{
+			if (!await _auth.ValidateUser(userForAuthDto))
+				return Unauthorized(); //401
+
+			return Ok(new
+			{
+				Token = await _auth.CreateToken()
+			});
+		}
 	}
 }
