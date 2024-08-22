@@ -38,7 +38,7 @@ namespace Presentation.Controllers
 
 		[Authorize(Roles = "Admin")]
 		[HttpPut]
-		public async Task<IActionResult> UpdateOneExerciseCategoryAsync([FromBody] WorkoutDtoForUpdate exerciseCategoryDto)
+		public async Task<IActionResult> UpdateOneExerciseCategoryAsync([FromBody] ExerciseCategoryDtoForUpdate exerciseCategoryDto)
 		{
 			await _exerciseCategoryService.UpdateExerciseCategoryAsync(exerciseCategoryDto, true);
 			return Ok();

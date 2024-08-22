@@ -47,7 +47,7 @@ namespace Services.ServiceConcretes
 				return exerciseCategory;
 			throw new ArgumentNullException("exercise category you looked for couldn't found.");
 		}
-		public async Task UpdateExerciseCategoryAsync(WorkoutDtoForUpdate exerciseCategoryDto, bool trackChanges)
+		public async Task UpdateExerciseCategoryAsync(ExerciseCategoryDtoForUpdate exerciseCategoryDto, bool trackChanges)
 		{
 			var entity = await GetOneExerciseCategoryByIdAndCheckExist(exerciseCategoryDto.Id, trackChanges);
 			entity = _mapper.Map(exerciseCategoryDto, entity);

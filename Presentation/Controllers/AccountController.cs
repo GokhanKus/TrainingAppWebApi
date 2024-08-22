@@ -1,4 +1,5 @@
 ﻿using Entities.DTOs.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.ServiceContracts;
 using System;
@@ -19,7 +20,7 @@ namespace Presentation.Controllers
 			_auth = auth;
 		}
 
-		[HttpPost]
+		[HttpPost("register")]
 		public async Task<IActionResult> RegisterUser([FromBody] UserDtoForRegistration userForRegistrationDto)
 		{
 			var result = await _auth.RegisterUser(userForRegistrationDto);
@@ -33,8 +34,8 @@ namespace Presentation.Controllers
 			}
 			return StatusCode(201); //return Created();
 		}
-
-		[HttpDelete("{email}")]
+		[Authorize(Roles = "Admin")]
+		[HttpDelete("delete/{email}")]
 		public async Task<IActionResult> DeleteUser([FromRoute] string email)
 		{
 			var result = await _auth.DeleteUserByEmail(email);

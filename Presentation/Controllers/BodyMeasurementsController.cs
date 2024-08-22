@@ -13,11 +13,6 @@ namespace Presentation.Controllers
 	[ApiController]
 	public class BodyMeasurementsController : ControllerBase
 	{
-		//henuz user login, jwt token veya cookie islemleri yapilmadigi icin userId manuel olarak biz verelim, ilerde dinamik olarak userId'i ClaimTypes.NameIdentifier ile alacagiz.
-		static string johnDoeId = "a3058765-ecf0-403e-9d48-08b38d4888ab";
-		static string janeDoeId = "8cee140a-65fd-495d-970b-5315a6f3e7b2";
-		static string someUserId = "073c467a-491d-4f4f-952f-df031e8fdb14";
-
 		private readonly IBodyMeasurementService _bodyMeasurementService;
 		private readonly UserManager<AppUser> _userManager;
 		public BodyMeasurementsController(IBodyMeasurementService bodyMeasurementService, UserManager<AppUser> userManager)
@@ -29,22 +24,19 @@ namespace Presentation.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllBodyMeasurementsAsync()
 		{
-			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Kullanıcı Id alınıyor
-			var measurementWithUser = await _bodyMeasurementService.GetAllBodyMeasurementsByUserIdAsync(someUserId, false);
+			var userId = GetUserId();
+			var measurementWithUser = await _bodyMeasurementService.GetAllBodyMeasurementsByUserIdAsync(userId, false);
 			return Ok(measurementWithUser);
 		}
 
 		[HttpGet("{id:int}")]
 		public async Task<IActionResult> GetOneBodyMeasurementAsync([FromRoute] int id)
 		{
-			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Kullanıcı Id alınıyor
+			var userId = GetUserId();
+			if (userId == null)
+				return Unauthorized();
 
-			//if (userId == null)
-			//	return Unauthorized();
-
-			// Route'dan gelen id'yi ve userId'yi kullanarak veri alıyoruz
-			var measurementWithUser = await _bodyMeasurementService.GetOneBodyMeasurementByUserIdAsync(id, someUserId, false);
-
+			var measurementWithUser = await _bodyMeasurementService.GetOneBodyMeasurementByUserIdAsync(id, userId, false);
 			if (measurementWithUser == null)
 				return NotFound();
 
@@ -54,35 +46,38 @@ namespace Presentation.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddBodyMeasurementAsync([FromBody] BodyMeasurementDtoForInsertion bodyMeasurementDto)
 		{
-			//var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			//if (userId == null)
-			//	return Unauthorized();
+			var userId = GetUserId();
+			if (userId == null)
+				return Unauthorized();
 
-			await _bodyMeasurementService.AddOneBodyMeasurementAsync(someUserId, bodyMeasurementDto);
+			await _bodyMeasurementService.AddOneBodyMeasurementAsync(userId, bodyMeasurementDto);
 			return Ok(bodyMeasurementDto);
 		}
 
 		[HttpPut]
 		public async Task<IActionResult> UpdateBodyMeasurementAsync([FromBody] BodyMeasurementDtoForUpdate bodyMeasurementDto)
 		{
-			//var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			//if (userId == null)
-			//	return Unauthorized();
+			var userId = GetUserId();
+			if (userId == null)
+				return Unauthorized();
 
-			//bodyMeasurementDto.Id = id;
-			await _bodyMeasurementService.UpdateOneBodyMeasurementAsync(someUserId, bodyMeasurementDto, true);
+			await _bodyMeasurementService.UpdateOneBodyMeasurementAsync(userId, bodyMeasurementDto, true);
 			return NoContent();
 		}
 
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteBodyMeasurementAsync([FromRoute] int id)
 		{
-			//var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			//if (userId == null)
-			//	return Unauthorized();
+			var userId = GetUserId();
+			if (userId == null)
+				return Unauthorized();
 
-			await _bodyMeasurementService.DeleteOneBodyMeasurementAsync(id, someUserId, false);
+			await _bodyMeasurementService.DeleteOneBodyMeasurementAsync(id, userId, false);
 			return NoContent();
+		}
+		private string? GetUserId()
+		{
+			return User.FindFirstValue(ClaimTypes.NameIdentifier);
 		}
 	}
 }

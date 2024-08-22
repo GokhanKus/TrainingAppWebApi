@@ -77,7 +77,8 @@ namespace Services.ServiceConcretes
 		{
 			var claims = new List<Claim>
 			{
-				new Claim(ClaimTypes.Name,_user.UserName)
+				new Claim(ClaimTypes.Name,_user.UserName), // Kullanıcı adı eklendi
+				 new Claim(ClaimTypes.NameIdentifier, _user.Id), // Kullanıcı ID'si eklendi //bu User.FindFirstValue(ClaimTypes.NameIdentifier); ile userId alabilmek icin gerekli
 			};
 			var roles = await _userManager.GetRolesAsync(_user);
 			foreach (var role in roles)
@@ -89,8 +90,8 @@ namespace Services.ServiceConcretes
 		private JwtSecurityToken GenerateTokenOptions(SigningCredentials signinCredentials, List<Claim> claims)
 		{
 			var jwtSettings = _configuration.GetSection("JwtSettings");
-			var tokenOptions = new JwtSecurityToken(
 
+			var tokenOptions = new JwtSecurityToken(
 				issuer: jwtSettings["validIssuer"],
 				audience: jwtSettings["validAudience"],
 				claims: claims,
