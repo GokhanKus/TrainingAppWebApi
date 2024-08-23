@@ -56,10 +56,13 @@ namespace Presentation.Controllers
 			if (!await _auth.ValidateUser(userForAuthDto))
 				return Unauthorized(); //401
 
+			var tokenDto = await _auth.CreateToken(populateExpiry: true);
+
 			return Ok(new
 			{
 				Token = await _auth.CreateToken()
 			});
+
 			//[Authorize] olan Controllerlarimizda actionlara(metotlara) erisebilmek icin uretilen token ile postman'de authorization kısmında bearer token secerek erisilebilir
 			//Postmande Controllerlarda orn Workout icin requestler.. Autherization kismina Tokeni ver, crud islemlerinde autherization kismina type: Inherit auth from parent
 			//account post login icin postmande script yazildi, artik her login oldugumuzda gelen token otomatik olarak global accessTokene set ediliyor yani artik manuel olarak girmiyoruz
