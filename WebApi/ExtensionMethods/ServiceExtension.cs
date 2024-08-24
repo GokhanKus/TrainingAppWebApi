@@ -60,7 +60,7 @@ namespace WebApi.ExtensionMethods
 		{
 			var jwtSettings = config.GetSection("jwtSettings");
 			var secretKey = jwtSettings.GetValue<string>("secretKey"); //jwtSettings["secretKey"];
-			//authentication icin default semalar
+																	   //authentication icin default semalar
 			service.AddAuthentication(opt =>
 			{
 				opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -79,5 +79,9 @@ namespace WebApi.ExtensionMethods
 				};
 			});
 		}
-    }
+		public static void LoggerService(this IServiceCollection services)
+		{
+			services.AddSingleton<ILoggerService, LoggerService>();
+		}
+	}
 }

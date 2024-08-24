@@ -1,4 +1,5 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using NLog;
 using Services.Mapper;
 using WebApi.ExtensionMethods;
 
@@ -20,10 +21,13 @@ namespace WebApi
 
 			builder.Services.AddAutoMapper(typeof(MappingProfile)); // services/Mapper/MappingProfile
 
+			LogManager.Setup().LoadConfigurationFromFile(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+			//nlogu baslatip nlog.config dosyasindaki yapýlandirmayi yukler
+
 			builder.Services.SqlConfiguration(builder.Configuration);
 			builder.Services.RepositoryInjections();
 			builder.Services.ServiceInjections();
-
+			builder.Services.LoggerService();
 			builder.Services.ConfigureIdentityDbContext();
 			builder.Services.ConfigureJWT(builder.Configuration);
 
