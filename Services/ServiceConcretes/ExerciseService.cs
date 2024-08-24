@@ -2,6 +2,7 @@
 using Entities.DTOs.Exercise;
 using Entities.Models;
 using Repositories.UnitOfWork;
+using Services.Exceptions;
 
 namespace Services.ServiceConcretes
 {
@@ -35,16 +36,14 @@ namespace Services.ServiceConcretes
 		public async Task<Exercise> GetOneExerciseByIdAsync(int id, bool trackChanges)
 		{
 			var exercise = await GetOneExerciseByIdAndCheckExist(id, trackChanges);
-			if (exercise is not null)
-				return exercise;
-			throw new ArgumentNullException("exercise you looked for couldn't found.");
+			return exercise;
 		}
 		public async Task<Exercise> GetOneExerciseWithCategoryAsync(int id)
 		{
 			var exercise = await _unitOfWork.ExerciseRepository.GetOneExerciseWithCategoryAsync(id);
 			if (exercise is not null)
 				return exercise;
-			throw new ArgumentNullException("exercise you looked for couldn't found.");
+			throw new ExerciseNotFound("exercise you looked for couldn't found.");
 		}
 		public async Task UpdateExerciseAsync(ExerciseDtoForUpdate exerciseDto, bool trackChanges)
 		{
@@ -59,7 +58,7 @@ namespace Services.ServiceConcretes
 		{
 			var exercise = await _unitOfWork.ExerciseRepository.GetOneExerciseByIdAsync(id, trackChanges);
 			if (exercise is null)
-				throw new ArgumentNullException("exercise you looked for couldn't found.");
+				throw new ExerciseNotFound("exercise you looked for couldn't found.");
 			return exercise;
 		}
 	}

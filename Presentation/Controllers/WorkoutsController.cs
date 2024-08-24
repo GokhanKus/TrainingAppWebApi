@@ -37,10 +37,6 @@ namespace Presentation.Controllers
 				return Unauthorized();
 
 			var workout = await _workoutService.GetOneWorkoutByUserIdAsync(id, userId, false);
-
-			if (workout == null)
-				return NotFound();
-
 			return Ok(workout);
 		}
 
@@ -52,10 +48,6 @@ namespace Presentation.Controllers
 				return Unauthorized();
 
 			var workoutWithExercise = await _workoutService.GetOneWorkoutWithExercises(id, userId);
-
-			if (workoutWithExercise == null)
-				return NotFound();
-
 			return Ok(workoutWithExercise);
 		}
 

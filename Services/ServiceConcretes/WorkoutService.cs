@@ -2,6 +2,7 @@
 using Entities.DTOs.ExerciseCategory;
 using Entities.Models;
 using Repositories.UnitOfWork;
+using Services.Exceptions;
 
 namespace Services.ServiceConcretes
 {
@@ -60,7 +61,7 @@ namespace Services.ServiceConcretes
 			var workoutWithExercise = await _unitOfWork.WorkoutRepository.GetOneWorkoutWithExercises(id, userId);
 
 			if (workoutWithExercise == null)
-				throw new ArgumentNullException("workoutWithExercise not found");
+				throw new WorkoutNotFoundException("workoutWithExercise not found");
 
 			return workoutWithExercise;
 		}
@@ -68,7 +69,7 @@ namespace Services.ServiceConcretes
 		{
 			var workout = await _unitOfWork.WorkoutRepository.GetOneWorkoutByUserIdAsync(id, userId, trackChanges);
 			if (workout == null)
-				throw new ArgumentNullException("workout not found");
+				throw new WorkoutNotFoundException("workout not found");
 			return workout;
 		}
 	}

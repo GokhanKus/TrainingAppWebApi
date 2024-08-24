@@ -4,6 +4,7 @@ using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Services.Exceptions;
 using Services.ServiceContracts;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -41,7 +42,7 @@ namespace Services.ServiceConcretes
 			var user = await _userManager.FindByEmailAsync(email);
 
 			if (user == null)
-				throw new Exception("no users found");
+				throw new UserNotFound("no users found");
 
 			var result = await _userManager.DeleteAsync(user);
 			return result;
@@ -54,7 +55,7 @@ namespace Services.ServiceConcretes
 
 			//ilerde hata fırlatmak yerine logger ile kayit tutulabilir 
 			if (!result)
-				throw new Exception("Authentication failed. Wrong username or password.");
+				throw new UserNotFound("Authentication failed. Wrong username or password.");
 
 			return result;
 		}
@@ -77,10 +78,7 @@ namespace Services.ServiceConcretes
 				AccessToken = accessToken,
 				RefreshToken = refreshToken
 			};
-			//string jsonWebToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-			//return jsonWebToken;
 		}
-
 		private string GenerateRefreshToken()
 		{
 			var randomNumber = new byte[32];
@@ -153,7 +151,6 @@ namespace Services.ServiceConcretes
 
 			return principal;
 		}
-
 		public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
 		{
 			var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
@@ -162,8 +159,7 @@ namespace Services.ServiceConcretes
 			var user = await _userManager.FindByNameAsync(principal.Identity.Name);
 
 			if (user is null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
-				throw new Exception("Invalid client request. The tokenDto has some invalid values.");
-			//throw new RefreshTokenBadRequestException(); ileride hata yonetimi eklenecek
+				throw new RefreshTokenBadRequestException();
 
 			_user = user;
 			return await CreateToken(populateExpiry: false);

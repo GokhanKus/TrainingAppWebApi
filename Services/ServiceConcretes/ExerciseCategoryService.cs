@@ -2,6 +2,7 @@
 using Entities.DTOs.ExerciseCategory;
 using Entities.Models;
 using Repositories.UnitOfWork;
+using Services.Exceptions;
 
 namespace Services.ServiceConcretes
 {
@@ -35,17 +36,15 @@ namespace Services.ServiceConcretes
 		}
 		public async Task<ExerciseCategory?> GetOneExerciseCategoryByIdAsync(int id, bool trackChanges)
 		{
-			var exercise = await GetOneExerciseCategoryByIdAndCheckExist(id, trackChanges);
-			if (exercise is not null)
-				return exercise;
-			throw new ArgumentNullException("exercise category you looked for couldn't found.");
+			var exerciseCategory = await GetOneExerciseCategoryByIdAndCheckExist(id, trackChanges);
+			return exerciseCategory;
 		}
 		public async Task<ExerciseCategory?> GetOneExerciseCategoryWithExercisesAsync(int id)
 		{
 			var exerciseCategory = await _unitOfWork.ExerciseCategoryRepository.GetOneExerciseCategoryWithExercisesAsync(id);
 			if (exerciseCategory is not null)
 				return exerciseCategory;
-			throw new ArgumentNullException("exercise category you looked for couldn't found.");
+			throw new ExerciseCategoryNotFound("exercise category you looked for couldn't found.");
 		}
 		public async Task UpdateExerciseCategoryAsync(ExerciseCategoryDtoForUpdate exerciseCategoryDto, bool trackChanges)
 		{
@@ -60,7 +59,7 @@ namespace Services.ServiceConcretes
 		{
 			var exerciseCategory = await _unitOfWork.ExerciseCategoryRepository.GetOneExerciseCategoryByIdAsync(id, trackChanges);
 			if (exerciseCategory is null)
-				throw new ArgumentNullException("exercise category you looked for couldn't found.");
+				throw new ExerciseCategoryNotFound("exercise category you looked for couldn't found.");
 			return exerciseCategory;
 		}
 	}

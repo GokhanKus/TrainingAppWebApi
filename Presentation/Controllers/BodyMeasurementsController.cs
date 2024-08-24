@@ -37,9 +37,6 @@ namespace Presentation.Controllers
 				return Unauthorized();
 
 			var measurementWithUser = await _bodyMeasurementService.GetOneBodyMeasurementByUserIdAsync(id, userId, false);
-			if (measurementWithUser == null)
-				return NotFound();
-
 			return Ok(measurementWithUser);
 		}
 
