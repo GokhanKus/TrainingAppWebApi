@@ -57,15 +57,23 @@ namespace Presentation.Controllers
 				return Unauthorized(); //401
 
 			var tokenDto = await _auth.CreateToken(populateExpiry: true);
-
-			return Ok(new
-			{
-				Token = await _auth.CreateToken()
-			});
+			return Ok(tokenDto);
 
 			//[Authorize] olan Controllerlarimizda actionlara(metotlara) erisebilmek icin uretilen token ile postman'de authorization kısmında bearer token secerek erisilebilir
 			//Postmande Controllerlarda orn Workout icin requestler.. Autherization kismina Tokeni ver, crud islemlerinde autherization kismina type: Inherit auth from parent
 			//account post login icin postmande script yazildi, artik her login oldugumuzda gelen token otomatik olarak global accessTokene set ediliyor yani artik manuel olarak girmiyoruz
+		}
+
+		[HttpPost("refresh")]
+		public async Task<IActionResult> Refresh([FromBody] TokenDto tokenDto)
+		{
+			var tokenDtoToReturn = await _auth.RefreshToken(tokenDto);
+			return Ok(tokenDtoToReturn);
+			//Refresh Token
+			//kurumsal firmalarda genellikle tokenlerin suresi 30 dk, 1 saat değil de 5 dk gibi kısa süreler de olur, cunku encode edilen bu tokenler decoder ile basit bir sekilde cozulecegi icin ve
+			//kotu niyetli kisilerin bu tokeni alıp kullanabilecegi icin 5 dk gibi kısa sureli tokenler olusturulur ve refresh edilir refresh token bu yuzden kullanilir
+			//ayrıca tokenlerin expiry olma (sona erme) süreleri vardır refresh token sayesinde sanki istemci hic kopmamis gibi yeni tokeniyle istek atmaya devam edebilir
+			//hem guvenlık anlaminda hem de tokenin suresi bittiginde tekrar login olma zorunlulugu olmadan refresh token sayesinde isteklere devam edebilir
 		}
 	}
 }

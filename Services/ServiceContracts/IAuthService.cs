@@ -9,5 +9,6 @@ namespace Services.ServiceContracts
 		Task<IdentityResult> DeleteUserByEmail(string email);
 		Task<bool> ValidateUser(UserDtoForAuthentication userForAuthDto);
 		Task<TokenDto> CreateToken(bool populateExpiry);
+		Task<TokenDto> RefreshToken(TokenDto tokenDto);
 	}
 }

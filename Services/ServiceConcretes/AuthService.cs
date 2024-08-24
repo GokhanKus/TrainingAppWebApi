@@ -80,6 +80,7 @@ namespace Services.ServiceConcretes
 			//string jsonWebToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 			//return jsonWebToken;
 		}
+
 		private string GenerateRefreshToken()
 		{
 			var randomNumber = new byte[32];
@@ -151,6 +152,21 @@ namespace Services.ServiceConcretes
 				throw new SecurityTokenException("Invalid Token");
 
 			return principal;
+		}
+
+		public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
+		{
+			var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
+
+			//dbde ilgili user var mi? onu alalim
+			var user = await _userManager.FindByNameAsync(principal.Identity.Name);
+
+			if (user is null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+				throw new Exception("Invalid client request. The tokenDto has some invalid values.");
+			//throw new RefreshTokenBadRequestException(); ileride hata yonetimi eklenecek
+
+			_user = user;
+			return await CreateToken(populateExpiry: false);
 		}
 	}
 }
