@@ -18,10 +18,8 @@ namespace WebApi
 					opt.SerializerSettings.DateFormatString = "dd/MM/yyyy";
 				})
 				.AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
-
+			LogManager.Setup().LoadConfigurationFromFile(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config")); //nlogu baslatip nlog.config dosyasindaki yapýlandirmayi yukler
 			builder.Services.AddAutoMapper(typeof(MappingProfile)); // services/Mapper/MappingProfile
-
-			LogManager.Setup().LoadConfigurationFromFile(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 			//nlogu baslatip nlog.config dosyasindaki yapýlandirmayi yukler
 
 			builder.Services.SqlConfiguration(builder.Configuration);
