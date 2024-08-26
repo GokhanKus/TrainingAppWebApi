@@ -3,12 +3,14 @@ using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Services.ServiceConcretes;
 using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
 	[Authorize]
+	[ServiceFilter(typeof(LogFilterAttribute))]
 	[Route("api/body-measurement")]
 	[ApiController]
 	public class BodyMeasurementsController : ControllerBase
@@ -41,6 +43,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpPost]
+		[ValidationFilter]
 		public async Task<IActionResult> AddBodyMeasurementAsync([FromBody] BodyMeasurementDtoForInsertion bodyMeasurementDto)
 		{
 			var userId = GetUserId();
@@ -52,6 +55,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpPut]
+		[ValidationFilter]
 		public async Task<IActionResult> UpdateBodyMeasurementAsync([FromBody] BodyMeasurementDtoForUpdate bodyMeasurementDto)
 		{
 			var userId = GetUserId();

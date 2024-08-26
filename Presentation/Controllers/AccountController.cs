@@ -1,6 +1,7 @@
 ﻿using Entities.DTOs.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Services.ServiceContracts;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
+	[ServiceFilter(typeof(LogFilterAttribute))]
 	[ApiController]
 	[Route("api/auth")]
 	public class AccountController : ControllerBase
@@ -21,6 +23,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpPost("register")]
+		[ValidationFilter]
 		public async Task<IActionResult> RegisterUser([FromBody] UserDtoForRegistration userForRegistrationDto)
 		{
 			var result = await _auth.RegisterUser(userForRegistrationDto);
@@ -51,6 +54,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpPost("login")]
+		[ValidationFilter]
 		public async Task<IActionResult> Authenticate([FromBody] UserDtoForAuthentication userForAuthDto)
 		{
 			if (!await _auth.ValidateUser(userForAuthDto))
@@ -65,6 +69,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpPost("refresh")]
+		[ValidationFilter]
 		public async Task<IActionResult> Refresh([FromBody] TokenDto tokenDto)
 		{
 			var tokenDtoToReturn = await _auth.RefreshToken(tokenDto);

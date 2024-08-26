@@ -1,10 +1,12 @@
 ﻿using Entities.DTOs.ExerciseCategory;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Services.ServiceConcretes;
 
 namespace Presentation.Controllers
 {
+	[ServiceFilter(typeof(LogFilterAttribute))]
 	[Route("api/exercise-categories")]
 	[ApiController]
 	public class ExerciseCategoriesController : ControllerBase
@@ -37,6 +39,7 @@ namespace Presentation.Controllers
 		}
 
 		[Authorize(Roles = "Admin")]
+		[ValidationFilter]
 		[HttpPut]
 		public async Task<IActionResult> UpdateOneExerciseCategoryAsync([FromBody] ExerciseCategoryDtoForUpdate exerciseCategoryDto)
 		{
@@ -53,6 +56,7 @@ namespace Presentation.Controllers
 		}
 
 		[Authorize(Roles = "Admin")]
+		[ValidationFilter]
 		[HttpPost]
 		public async Task<IActionResult> CreateOneExerciseCategoryAsync([FromBody] ExerciseCategoryDtoForInsertion exerciseCategoryDto)
 		{

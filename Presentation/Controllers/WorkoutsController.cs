@@ -3,12 +3,14 @@ using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Services.ServiceConcretes;
 using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
 	[Authorize]
+	[ServiceFilter(typeof(LogFilterAttribute))]
 	[Route("api/workouts")]
 	[ApiController]
 	public class WorkoutsController : ControllerBase
@@ -51,6 +53,7 @@ namespace Presentation.Controllers
 			return Ok(workoutWithExercise);
 		}
 
+		[ValidationFilter]
 		[HttpPost]
 		public async Task<IActionResult> AddWorkoutAsync([FromBody] WorkoutDtoForInsertion workoutDto)
 		{

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Presentation.ActionFilters;
 using Repositories.Context;
 using Repositories.RepoConcretes;
 using Repositories.UnitOfWork;
@@ -82,6 +83,16 @@ namespace WebApi.ExtensionMethods
 		public static void LoggerService(this IServiceCollection services)
 		{
 			services.AddSingleton<ILoggerService, LoggerService>();
+		}
+		public static void ActionFilterInjections(this IServiceCollection services)
+		{
+			//bagimlilik gerektiren attr'ler icin servis kaydi yapilir ornegin LogFilterAttribute classi ILogger gibi bir bagimliligi kullaniyor;
+			//o yuzden IoC kaydi yapilir ve [ServiceFilter(typeof(LogFilterAttribute))] yazarak kullanilabilir
+			//ama ValidationFilterAttribute attr icin boyle bir durum soz konusu degil;
+			//o yuzden onu controller seviyesinde ya da action bazında direkt [ValidationFilter] yazarak kullanabiliriz.
+
+			//services.AddScoped<ValidationFilterAttribute>();
+			services.AddSingleton<LogFilterAttribute>(); //loglama islemi icin sadece bir tane nesnenin olusmasi yeterli o yuzden singleton
 		}
 	}
 }
