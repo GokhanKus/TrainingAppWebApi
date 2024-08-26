@@ -54,7 +54,7 @@ namespace Services.ServiceConcretes
 		{
 			var bodyMeasurement = await _unitOfWork.BodyMeasurementRepository.GetOneBodyMeasurementByUserIdAsync(id, userId, trackChanges);
 			if (bodyMeasurement == null)
-				throw new BodyMeasurementNotFoundException("BodyMeasurement not found");
+				throw new BodyMeasurementNotFoundException(id);
 			return bodyMeasurement;
 		}
 	}

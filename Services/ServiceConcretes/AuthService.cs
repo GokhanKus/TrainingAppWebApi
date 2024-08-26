@@ -42,7 +42,7 @@ namespace Services.ServiceConcretes
 			var user = await _userManager.FindByEmailAsync(email);
 
 			if (user == null)
-				throw new UserNotFound("no users found");
+				throw new UserNotFoundException("no users found");
 
 			var result = await _userManager.DeleteAsync(user);
 			return result;
@@ -55,7 +55,7 @@ namespace Services.ServiceConcretes
 
 			//ilerde hata fırlatmak yerine logger ile kayit tutulabilir 
 			if (!result)
-				throw new UserNotFound("Authentication failed. Wrong username or password.");
+				throw new UserNotFoundException("Authentication failed. Wrong username or password.");
 
 			return result;
 		}

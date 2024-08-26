@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Services.Exceptions
 {
-	public sealed class UserNotFound : NotFoundException
+	public sealed class UserNotFoundException : NotFoundException
 	{
-		public UserNotFound(string message) : base(message)
+		public UserNotFoundException(string message) : base(message)
 		{
 		}
 	}

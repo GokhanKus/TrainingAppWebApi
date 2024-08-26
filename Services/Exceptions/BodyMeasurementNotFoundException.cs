@@ -8,7 +8,7 @@ namespace Services.Exceptions
 {
 	public sealed class BodyMeasurementNotFoundException : NotFoundException
 	{
-		public BodyMeasurementNotFoundException(string message) : base(message)
+		public BodyMeasurementNotFoundException(int id) : base($"body measurement with id: {id} could not found")
 		{
 		}
 	}

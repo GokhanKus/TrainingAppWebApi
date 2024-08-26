@@ -44,7 +44,7 @@ namespace Services.ServiceConcretes
 			var exerciseCategory = await _unitOfWork.ExerciseCategoryRepository.GetOneExerciseCategoryWithExercisesAsync(id);
 			if (exerciseCategory is not null)
 				return exerciseCategory;
-			throw new ExerciseCategoryNotFound("exercise category you looked for couldn't found.");
+			throw new ExerciseCategoryNotFoundException(id);
 		}
 		public async Task UpdateExerciseCategoryAsync(ExerciseCategoryDtoForUpdate exerciseCategoryDto, bool trackChanges)
 		{
@@ -59,7 +59,7 @@ namespace Services.ServiceConcretes
 		{
 			var exerciseCategory = await _unitOfWork.ExerciseCategoryRepository.GetOneExerciseCategoryByIdAsync(id, trackChanges);
 			if (exerciseCategory is null)
-				throw new ExerciseCategoryNotFound("exercise category you looked for couldn't found.");
+				throw new ExerciseCategoryNotFoundException(id);
 			return exerciseCategory;
 		}
 	}
