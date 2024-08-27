@@ -29,7 +29,7 @@ namespace Services.ServiceConcretes
 			await _unitOfWork.SaveChangesAsync();
 		}
 
-		public async Task<IEnumerable<ExerciseCategory>> GetAllExercisesCategoriesAsync(bool trackChanges)
+		public async Task<IEnumerable<ExerciseCategory>?> GetAllExercisesCategoriesAsync(bool trackChanges)
 		{
 			var exerciseCategory = await _unitOfWork.ExerciseCategoryRepository.GetAllExerciseCategoriesAsync(trackChanges);
 			return exerciseCategory;

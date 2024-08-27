@@ -12,7 +12,7 @@ namespace Repositories.RepoConcretes
 		public async Task AddOneExerciseAsync(Exercise exercise) => await AddAsync(exercise);
 		public void DeleteOneExercise(Exercise exercise) => Delete(exercise);
 		public void UpdateOneExercise(Exercise exercise) => Update(exercise);
-		public async Task<IEnumerable<Exercise>> GetAllExercisesAsync(bool trackChanges)
+		public async Task<IEnumerable<Exercise>?> GetAllExercisesAsync(bool trackChanges)
 		{
 			return await GetAllAsync(trackChanges);
 		}

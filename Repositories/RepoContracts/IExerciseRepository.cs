@@ -4,7 +4,7 @@ namespace Repositories.RepoConcretes
 {
 	public interface IExerciseRepository
 	{
-		Task<IEnumerable<Exercise>> GetAllExercisesAsync(bool trackChanges);
+		Task<IEnumerable<Exercise>?> GetAllExercisesAsync(bool trackChanges);
 		Task<Exercise?> GetOneExerciseByIdAsync(int id, bool trackChanges);
 		Task<Exercise?> GetOneExerciseWithCategoryAsync(int id);
 		Task AddOneExerciseAsync(Exercise exercise);

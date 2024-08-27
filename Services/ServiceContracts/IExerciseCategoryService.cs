@@ -7,7 +7,7 @@ namespace Services.ServiceConcretes
 {
 	public interface IExerciseCategoryService
 	{
-		Task<IEnumerable<ExerciseCategory>> GetAllExercisesCategoriesAsync(bool trackChanges);
+		Task<IEnumerable<ExerciseCategory>?> GetAllExercisesCategoriesAsync(bool trackChanges);
 		Task<ExerciseCategory?> GetOneExerciseCategoryByIdAsync(int id, bool trackChanges);
 		Task<ExerciseCategory?> GetOneExerciseCategoryWithExercisesAsync(int id);
 		Task<ExerciseCategory> AddExerciseCategoryAsync(ExerciseCategoryDtoForInsertion exerciseCategoryDto);

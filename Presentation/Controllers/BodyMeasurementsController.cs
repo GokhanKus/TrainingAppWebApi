@@ -76,9 +76,9 @@ namespace Presentation.Controllers
 			await _bodyMeasurementService.DeleteOneBodyMeasurementAsync(id, userId, false);
 			return NoContent();
 		}
-		private string? GetUserId()
+		private string GetUserId()
 		{
-			return User.FindFirstValue(ClaimTypes.NameIdentifier);
+			return User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
 		}
 	}
 }

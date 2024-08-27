@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Presentation.ActionFilters;
 using Repositories.Context;
@@ -28,9 +29,17 @@ namespace WebApi.ExtensionMethods
 		public static void RepositoryInjections(this IServiceCollection service)
 		{
 			service.AddScoped<IBodyMeasurementRepository, BodyMeasurementRepository>();
+			service.Decorate<IBodyMeasurementRepository, CachedBodyMeasurementRepository>();
+
 			service.AddScoped<IExerciseCategoryRepository, ExerciseCategoryRepository>();
+			service.Decorate<IExerciseCategoryRepository, CachedExerciseCategoryRepository>();
+
 			service.AddScoped<IExerciseRepository, ExerciseRepository>();
+			service.Decorate<IExerciseRepository, CachedExerciseRepository>();
+
 			service.AddScoped<IWorkoutRepository, WorkoutRepository>();
+			service.Decorate<IWorkoutRepository, CachedWorkoutRepository>();
+
 			service.AddScoped<IUnitOfWork, UnitOfWork>();
 		}
 		public static void ServiceInjections(this IServiceCollection service)

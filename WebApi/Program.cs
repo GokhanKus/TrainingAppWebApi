@@ -36,6 +36,8 @@ namespace WebApi
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
+			builder.Services.AddMemoryCache();
+
 			var app = builder.Build(); //app'i elde ettigimiz asama bu satir'dan sonra ihtiyac duyulan servisler alinabilir.
 
 			var logger = app.Services.GetRequiredService<ILoggerService>();

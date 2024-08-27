@@ -15,8 +15,11 @@ namespace Services.Mapper
 			CreateMap<ExerciseDtoForUpdate, Exercise>().ReverseMap();
 			CreateMap<ExerciseDtoForInsertion, Exercise>();
 
-			CreateMap<ExerciseCategoryDtoForInsertion, ExerciseCategory>().ReverseMap();
+			CreateMap<ExerciseCategoryDtoForUpdate, ExerciseCategory>().ReverseMap();
+			CreateMap<ExerciseCategoryDtoForInsertion, ExerciseCategory>();
+
 			CreateMap<WorkoutDtoForUpdate, ExerciseCategory>();
+			CreateMap<WorkoutDtoForInsertion, Workout>();
 
 			CreateMap<BodyMeasurementDtoForUpdate, BodyMeasurement>().ReverseMap();
 			CreateMap<BodyMeasurementDtoForInsertion, BodyMeasurement>();
@@ -25,7 +28,6 @@ namespace Services.Mapper
 
 			//CreateMap<WorkoutDtoForInsertion, Workout>()
 			//	.ForMember(dest => dest.WorkoutExercises, opt => opt.MapFrom(src => src.WorkoutExercises));
-			CreateMap<WorkoutDtoForInsertion, Workout>();
 
 			// WorkoutExerciseDtoForInsertion -> WorkoutExercise
 			CreateMap<WorkoutExerciseDtoForInsertion, WorkoutExercise>();

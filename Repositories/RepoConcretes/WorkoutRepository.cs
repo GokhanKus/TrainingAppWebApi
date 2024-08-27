@@ -13,6 +13,7 @@ namespace Repositories.RepoConcretes
 
 		public async Task AddWorkoutAsync(string userId, Workout workout)
 		{
+			workout.UserId = userId;
 			await AddAsync(workout);
 		}
 
@@ -22,7 +23,7 @@ namespace Repositories.RepoConcretes
 			Delete(workout);
 		}
 
-		public async Task<IEnumerable<Workout>> GetAllWorkoutsByUserIdAsync(string userId, bool trackChanges)
+		public async Task<IEnumerable<Workout>?> GetAllWorkoutsByUserIdAsync(string userId, bool trackChanges)
 		{
 			return await GetAllByConditionAsync(w => w.UserId == userId, trackChanges);
 		}

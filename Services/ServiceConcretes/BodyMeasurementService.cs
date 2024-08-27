@@ -15,7 +15,7 @@ namespace Services.ServiceConcretes
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 		}
-		public async Task<IEnumerable<BodyMeasurement>> GetAllBodyMeasurementsByUserIdAsync(string userId, bool trackChanges)
+		public async Task<IEnumerable<BodyMeasurement>?> GetAllBodyMeasurementsByUserIdAsync(string userId, bool trackChanges)
 		{
 			if (userId is null)
 				throw new ArgumentNullException($"any body measurement could not found which is belong to the user with {userId}");

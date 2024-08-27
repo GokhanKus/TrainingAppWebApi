@@ -41,7 +41,7 @@ namespace Services.ServiceConcretes
 			_unitOfWork.WorkoutRepository.DeleteWorkout(userId, existingWorkout);
 			await _unitOfWork.SaveChangesAsync();
 		}
-		public async Task<IEnumerable<Workout>> GetAllWorkoutByUserIdAsync(string userId, bool trackChanges)
+		public async Task<IEnumerable<Workout>?> GetAllWorkoutByUserIdAsync(string userId, bool trackChanges)
 		{
 			if (userId is null)
 				throw new ArgumentNullException($"any workout could not found which is belong to the user with {userId}");

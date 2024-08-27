@@ -28,7 +28,7 @@ namespace Services.ServiceConcretes
 			_unitOfWork.ExerciseRepository.DeleteOneExercise(exerciseToDelete);
 			await _unitOfWork.SaveChangesAsync();
 		}
-		public async Task<IEnumerable<Exercise>> GetAllExercisesAsync(bool trackChanges)
+		public async Task<IEnumerable<Exercise>?> GetAllExercisesAsync(bool trackChanges)
 		{
 			var exercises = await _unitOfWork.ExerciseRepository.GetAllExercisesAsync(trackChanges);
 			return exercises;

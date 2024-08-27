@@ -14,7 +14,7 @@ namespace Repositories.RepoConcretes
 			await AddAsync(bodyMeasurement);
 		}
 
-		public async Task<IEnumerable<BodyMeasurement>> GetAllBodyMeasurementsByUserIdAsync(string userId, bool trackChanges)
+		public async Task<IEnumerable<BodyMeasurement>?> GetAllBodyMeasurementsByUserIdAsync(string userId, bool trackChanges)
 		{
 			return await GetAllByConditionAsync(bm => bm.UserId == userId, trackChanges);
 		}
