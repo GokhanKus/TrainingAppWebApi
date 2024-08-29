@@ -29,7 +29,7 @@ namespace WebApi
 			builder.Services.SqlConfiguration(builder.Configuration);
 			builder.Services.RepositoryInjections();
 			builder.Services.ServiceInjections();
-			builder.Services.LoggerService();
+			builder.Services.LoggerServiceInjection();
 			builder.Services.ConfigureIdentityDbContext();
 			builder.Services.ConfigureJWT(builder.Configuration);
 
@@ -37,6 +37,7 @@ namespace WebApi
 			builder.Services.AddSwaggerGen();
 
 			builder.Services.AddMemoryCache();
+			builder.Services.AddRedisImplementation(builder.Configuration);
 
 			var app = builder.Build(); //app'i elde ettigimiz asama bu satir'dan sonra ihtiyac duyulan servisler alinabilir.
 

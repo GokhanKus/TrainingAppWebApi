@@ -62,7 +62,8 @@ namespace Presentation.Controllers
 			if (userId == null)
 				return Unauthorized();
 
-			await _bodyMeasurementService.UpdateOneBodyMeasurementAsync(userId, bodyMeasurementDto, true);
+			//trackChanges false yapip update metodunu calistirmaya karar verdim aksi taktirde rediscache duzgun calismiyordu
+			await _bodyMeasurementService.UpdateOneBodyMeasurementAsync(userId, bodyMeasurementDto, false);
 			return NoContent();
 		}
 

@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Presentation.ActionFilters;
 using Repositories.Context;
+using Repositories.DistributedCacheRepos;
+using Repositories.MemoryCachedRepos;
 using Repositories.RepoConcretes;
 using Repositories.UnitOfWork;
 using Services.ServiceConcretes;
@@ -29,7 +30,8 @@ namespace WebApi.ExtensionMethods
 		public static void RepositoryInjections(this IServiceCollection service)
 		{
 			service.AddScoped<IBodyMeasurementRepository, BodyMeasurementRepository>();
-			service.Decorate<IBodyMeasurementRepository, CachedBodyMeasurementRepository>();
+			service.Decorate<IBodyMeasurementRepository, RedisCacheBodyMeasurementRepository>();
+			//service.Decorate<IBodyMeasurementRepository, CachedBodyMeasurementRepository>(); this is for InMemoryCache
 
 			service.AddScoped<IExerciseCategoryRepository, ExerciseCategoryRepository>();
 			service.Decorate<IExerciseCategoryRepository, CachedExerciseCategoryRepository>();
@@ -89,11 +91,11 @@ namespace WebApi.ExtensionMethods
 				};
 			});
 		}
-		public static void LoggerService(this IServiceCollection services)
+		public static void LoggerServiceInjection(this IServiceCollection service)
 		{
-			services.AddSingleton<ILoggerService, LoggerService>();
+			service.AddSingleton<ILoggerService, LoggerService>();
 		}
-		public static void ActionFilterInjections(this IServiceCollection services)
+		public static void ActionFilterInjections(this IServiceCollection service)
 		{
 			//bagimlilik gerektiren attr'ler icin servis kaydi yapilir ornegin LogFilterAttribute classi ILogger gibi bir bagimliligi kullaniyor;
 			//o yuzden IoC kaydi yapilir ve [ServiceFilter(typeof(LogFilterAttribute))] yazarak kullanilabilir
@@ -101,7 +103,15 @@ namespace WebApi.ExtensionMethods
 			//o yuzden onu controller seviyesinde ya da action bazında direkt [ValidationFilter] yazarak kullanabiliriz.
 
 			//services.AddScoped<ValidationFilterAttribute>();
-			services.AddSingleton<LogFilterAttribute>(); //loglama islemi icin sadece bir tane nesnenin olusmasi yeterli o yuzden singleton
+			service.AddSingleton<LogFilterAttribute>(); //loglama islemi icin sadece bir tane nesnenin olusmasi yeterli o yuzden singleton
+		}
+		public static void AddRedisImplementation(this IServiceCollection service, IConfiguration config)
+		{
+			var redisConnectionString = config.GetConnectionString("Redis");
+			service.AddStackExchangeRedisCache(redisOptions =>
+			{
+				redisOptions.Configuration = redisConnectionString;
+			});
 		}
 	}
 }

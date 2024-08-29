@@ -37,10 +37,10 @@ namespace Services.ServiceConcretes
 		public async Task UpdateOneBodyMeasurementAsync(string userId, BodyMeasurementDtoForUpdate bodyMeasurementDto, bool trackChanges)
 		{
 			var existingMeasurement = await GetOneBodyMeasurementAndCheckExist(bodyMeasurementDto.Id, userId, trackChanges);
-			_mapper.Map(bodyMeasurementDto, existingMeasurement);
+			var bodyMeasurement = _mapper.Map(bodyMeasurementDto, existingMeasurement);
 
 			//degisiklikler izlenirse (trackChanges == true)) Update() metodu cagirilmaz
-			//_unitOfWork.BodyMeasurementRepository.UpdateOneBodyMeasurement(userId, bodyMeasurement);
+			_unitOfWork.BodyMeasurementRepository.UpdateOneBodyMeasurement(userId, bodyMeasurement);
 			await _unitOfWork.SaveChangesAsync();
 		}
 		public async Task DeleteOneBodyMeasurementAsync(int id, string userId, bool trackChanges)
