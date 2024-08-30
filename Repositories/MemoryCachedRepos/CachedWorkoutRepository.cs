@@ -65,14 +65,14 @@ namespace Repositories.MemoryCachedRepos
             return workoutWithExercises;
         }
 
-        public void UpdateWorkout(string userId, Workout workout)
-        {
-            workout.UserId = userId;
-            _decorated.UpdateWorkout(userId, workout);
+        //public void UpdateWorkout(string userId, Workout workout)
+        //{
+        //    workout.UserId = userId;
+        //    _decorated.UpdateWorkout(userId, workout);
 
-            _memoryCache.Remove($"AllWorkoutsByUserId_{userId}");
-            _memoryCache.Remove($"WorkoutByUserId_{userId}_{workout.Id}");
-            _memoryCache.Remove($"WorkoutWithExercises{userId}_{workout.Id}");
-        }
+        //    _memoryCache.Remove($"AllWorkoutsByUserId_{userId}");
+        //    _memoryCache.Remove($"WorkoutByUserId_{userId}_{workout.Id}");
+        //    _memoryCache.Remove($"WorkoutWithExercises{userId}_{workout.Id}");
+        //}
     }
 }

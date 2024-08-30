@@ -40,7 +40,8 @@ namespace WebApi.ExtensionMethods
 			service.Decorate<IExerciseRepository, CachedExerciseRepository>();
 
 			service.AddScoped<IWorkoutRepository, WorkoutRepository>();
-			service.Decorate<IWorkoutRepository, CachedWorkoutRepository>();
+			service.Decorate<IWorkoutRepository, RedisCacheWorkoutRepository>();
+			//service.Decorate<IWorkoutRepository, CachedWorkoutRepository>();
 
 			service.AddScoped<IUnitOfWork, UnitOfWork>();
 		}
