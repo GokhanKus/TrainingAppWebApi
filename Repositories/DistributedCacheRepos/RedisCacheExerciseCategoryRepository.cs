@@ -18,13 +18,13 @@ namespace Repositories.DistributedCacheRepos
 		public async Task AddOneExerciseCategoryAsync(ExerciseCategory exerciseCategory)
 		{
 			await _decorated.AddOneExerciseCategoryAsync(exerciseCategory);
-			var listCacheKey = $"AllExercises";
+			var listCacheKey = $"AllExerciseCategories";
 			await _redisCache.RemoveAsync(listCacheKey);
 		}
 
 		public async Task<IEnumerable<ExerciseCategory>?> GetAllExerciseCategoriesAsync(bool trackChanges)
 		{
-			var listCacheKey = $"AllExercises";
+			var listCacheKey = $"AllExerciseCategories";
 			var cachedData = await _redisCache.GetStringAsync(listCacheKey);
 
 			IEnumerable<ExerciseCategory>? exerciseCategories;
@@ -45,7 +45,7 @@ namespace Repositories.DistributedCacheRepos
 
 		public async Task<ExerciseCategory?> GetOneExerciseCategoryByIdAsync(int id, bool trackChanges)
 		{
-			var cacheKey = $"ExerciseById_{id}";
+			var cacheKey = $"ExerciseCategoryById_{id}";
 			var cachedData = await _redisCache.GetStringAsync(cacheKey);
 			ExerciseCategory? exerciseCategory;
 			if (string.IsNullOrEmpty(cachedData))
@@ -60,7 +60,7 @@ namespace Repositories.DistributedCacheRepos
 
 		public async Task<ExerciseCategory?> GetOneExerciseCategoryWithExercisesAsync(int id)
 		{
-			var cacheKeyWithExercise = $"ExerciseWithCategoryById_{id}";
+			var cacheKeyWithExercise = $"ExerciseCategoryWithExerciseById_{id}";
 			var cachedData = await _redisCache.GetStringAsync(cacheKeyWithExercise);
 			ExerciseCategory? exerciseCategory;
 			if (string.IsNullOrEmpty(cachedData))
@@ -94,13 +94,13 @@ namespace Repositories.DistributedCacheRepos
 		}
 		private void ClearCache(int id)
 		{
-			var cacheKeyWithExercise = $"ExerciseWithCategoryById_{id}";
+			var cacheKeyWithExercise = $"ExerciseCategoryWithExerciseById_{id}";
 			_redisCache.Remove(cacheKeyWithExercise);
 
-			var cacheKey = $"ExerciseById_{id}";
+			var cacheKey = $"ExerciseCategoryById_{id}";
 			_redisCache.Remove(cacheKey);
 
-			var listCacheKey = $"AllExercises";
+			var listCacheKey = $"AllExerciseCategories";
 			_redisCache.Remove(listCacheKey);
 		}
 	}

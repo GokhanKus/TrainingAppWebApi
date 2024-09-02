@@ -2,6 +2,7 @@
 using NLog;
 using Services.Mapper;
 using Services.ServiceContracts;
+using StackExchange.Redis;
 using WebApi.ExtensionMethods;
 
 namespace WebApi
@@ -25,7 +26,7 @@ namespace WebApi
 			builder.Services.AddAutoMapper(typeof(MappingProfile)); // services/Mapper/MappingProfile
 																	//nlogu baslatip nlog.config dosyasindaki yapýlandirmayi yukler
 
-			builder.Services.ActionFilterInjections();
+		builder.Services.ActionFilterInjections();
 			builder.Services.SqlConfiguration(builder.Configuration);
 			builder.Services.RepositoryInjections();
 			builder.Services.ServiceInjections();

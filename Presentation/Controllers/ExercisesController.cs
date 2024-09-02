@@ -44,7 +44,8 @@ namespace Presentation.Controllers
 		[HttpPut]
 		public async Task<IActionResult> UpdateOneExerciseAsync([FromBody] ExerciseDtoForUpdate exerciseDto)
 		{
-			await _exerciseService.UpdateExerciseAsync(exerciseDto, true);
+			//redis cache'te problem yasadik trackChanges false olsun update metoduna gitsin
+			await _exerciseService.UpdateExerciseAsync(exerciseDto, false);
 			return Ok();
 		}
 

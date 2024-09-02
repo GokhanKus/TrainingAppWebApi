@@ -11,6 +11,7 @@ using Repositories.RepoConcretes;
 using Repositories.UnitOfWork;
 using Services.ServiceConcretes;
 using Services.ServiceContracts;
+using StackExchange.Redis;
 using System.Text;
 
 namespace WebApi.ExtensionMethods
@@ -38,7 +39,8 @@ namespace WebApi.ExtensionMethods
 			//service.Decorate<IExerciseCategoryRepository, CachedExerciseCategoryRepository>();
 
 			service.AddScoped<IExerciseRepository, ExerciseRepository>();
-			service.Decorate<IExerciseRepository, CachedExerciseRepository>();
+			service.Decorate<IExerciseRepository, RedisCacheExerciseRepository>();
+			//service.Decorate<IExerciseRepository, CachedExerciseRepository>();
 
 			service.AddScoped<IWorkoutRepository, WorkoutRepository>();
 			service.Decorate<IWorkoutRepository, RedisCacheWorkoutRepository>();

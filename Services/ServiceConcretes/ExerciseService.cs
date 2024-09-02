@@ -51,7 +51,8 @@ namespace Services.ServiceConcretes
 			_mapper.Map(exerciseDto, entity);
 
 			//izlenen nesne(trackChanges = true ise) degisiklerden sonra Update() olmadan da dogrudan save edilebilir
-			//_unitOfWork.ExerciseRepository.UpdateOneExercise(entity);
+			//ama redis cache hata alıyorduk, o yuzden update metodu calissin
+			_unitOfWork.ExerciseRepository.UpdateOneExercise(entity);
 			await _unitOfWork.SaveChangesAsync();
 		}
 		private async Task<Exercise> GetOneExerciseByIdAndCheckExist(int id, bool trackChanges)
