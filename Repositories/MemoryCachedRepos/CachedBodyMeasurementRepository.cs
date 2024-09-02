@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.Extensions.Caching.Memory;
 using Repositories.RepoConcretes;
 
@@ -23,13 +24,13 @@ namespace Repositories.MemoryCachedRepos
             _memoryCache.Remove($"AllBodyMeasurementsByUserId_{userId}");
         }
 
-        public async Task<IEnumerable<BodyMeasurement>?> GetAllBodyMeasurementsByUserIdAsync(string userId, bool trackChanges)
+        public async Task<PagedList<BodyMeasurement>?> GetAllBodyMeasurementsByUserIdAsync(BodyMeasurementParameters bodyMeasurementParameters, string userId, bool trackChanges)
         {
             var cacheKey = $"AllBodyMeasurementsByUserId_{userId}";
             var allBodyMeasurements = await _memoryCache.GetOrCreateAsync(cacheKey, entry =>
             {
                 entry.SetAbsoluteExpiration(TimeSpan.FromMinutes(2));
-                return _decorated.GetAllBodyMeasurementsByUserIdAsync(userId, trackChanges);
+                return _decorated.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, trackChanges);
             });
             return allBodyMeasurements;
         }
@@ -61,5 +62,10 @@ namespace Repositories.MemoryCachedRepos
             _memoryCache.Remove($"AllBodyMeasurementsByUserId_{userId}");
             _memoryCache.Remove($"BodyMeasurementByUserId_{userId}_{bodyMeasurement.Id}");
         }
-    }
+
+		public Task<int> BodyMeasurementCountAsync(string userId)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.RequestFeatures;
 using Repositories.Context;
 using Repositories.RepoBases;
 
@@ -14,9 +15,10 @@ namespace Repositories.RepoConcretes
 			await AddAsync(bodyMeasurement);
 		}
 
-		public async Task<IEnumerable<BodyMeasurement>?> GetAllBodyMeasurementsByUserIdAsync(string userId, bool trackChanges)
+		public async Task<PagedList<BodyMeasurement>?> GetAllBodyMeasurementsByUserIdAsync(BodyMeasurementParameters bodyMeasurementParameters, string userId, bool trackChanges)
 		{
-			return await GetAllByConditionAsync(bm => bm.UserId == userId, trackChanges);
+			var bodyMeasurementsOfUser = await GetAllByConditionAsync(bm => bm.UserId == userId, trackChanges);
+			return PagedList<BodyMeasurement>.ToPagedList(bodyMeasurementsOfUser, bodyMeasurementParameters.PageNumber, bodyMeasurementParameters.PageSize);
 		}
 
 		public async Task<BodyMeasurement?> GetOneBodyMeasurementByUserIdAsync(int id, string userId, bool trackChanges)
@@ -34,6 +36,12 @@ namespace Repositories.RepoConcretes
 		{
 			bodyMeasurement.UserId = userId;  // userId kontrol ediliyor
 			Delete(bodyMeasurement);
+		}
+
+		public async Task<int> BodyMeasurementCountAsync(string userId)
+		{
+			var bodyMeasurements = await CountAsync(bm => bm.UserId == userId);
+			return bodyMeasurements;
 		}
 	}
 }

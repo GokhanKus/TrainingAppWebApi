@@ -8,7 +8,11 @@ namespace Entities.RequestFeatures
 {
 	public class PagedList<T> : List<T> where T : class
 	{
-		public MetaData MetaData { get; set; }
+		public MetaData? MetaData { get; set; }
+		public PagedList()
+		{
+
+		}
 		public PagedList(List<T> items, int count, int pageNumber, int pageSize)//List<T> items, ornegin List<Exercise> Exercises (IEnumerable<Exercise> Exercises) olarak dusunulebilir 
 		{
 			MetaData = new MetaData

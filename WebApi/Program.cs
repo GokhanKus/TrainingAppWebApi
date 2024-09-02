@@ -37,6 +37,7 @@ namespace WebApi
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
+
 			builder.Services.AddMemoryCache();
 			builder.Services.AddRedisImplementation(builder.Configuration);
 
@@ -54,6 +55,8 @@ namespace WebApi
 
 			if (app.Environment.IsProduction())
 				app.UseHsts();
+
+			app.UseCors("CorsPolicy");
 
 			app.UseAuthentication();
 			app.UseAuthorization();

@@ -32,8 +32,14 @@ namespace Repositories.RepoBases
 		public async Task<IEnumerable<TEntity>> GetAllByConditionAsync(Expression<Func<TEntity, bool>> expression, bool trackChanges)
 		{
 			return trackChanges
-				? await _dbSet.Where(expression).ToListAsync()
-				: await _dbSet.AsNoTracking().Where(expression).ToListAsync();
+				? await _dbSet.OrderBy(e => e.Id).Where(expression).ToListAsync()
+				: await _dbSet.OrderBy(e => e.Id).AsNoTracking().Where(expression).ToListAsync();
+		}
+
+		public async Task<int> CountAsync(Expression<Func<TEntity, bool>> expression)
+		{
+			return await _dbSet.Where(expression).CountAsync();
+				
 		}
 	}
 }

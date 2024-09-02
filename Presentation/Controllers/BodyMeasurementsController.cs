@@ -1,8 +1,10 @@
 ﻿using Entities.DTOs.BodyMeasurement;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Presentation.ActionFilters;
 using Services.ServiceConcretes;
 using System.Security.Claims;
@@ -24,11 +26,15 @@ namespace Presentation.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAllBodyMeasurementsAsync()
+		public async Task<IActionResult> GetAllBodyMeasurementsAsync([FromQuery] BodyMeasurementParameters bodyMeasurementParameters)//body-measurement?pageNumber=2&pageSize=10
 		{
 			var userId = GetUserId();
-			var measurementWithUser = await _bodyMeasurementService.GetAllBodyMeasurementsByUserIdAsync(userId, false);
-			return Ok(measurementWithUser);
+			//var measurementWithUser = await _bodyMeasurementService
+			//	.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, false);
+			//return Ok(measurementWithUser);
+			var pagedResult = await _bodyMeasurementService.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, false);
+			Response.Headers["X-Pagination"] = JsonConvert.SerializeObject(pagedResult.metaData);
+			return Ok(pagedResult.bodyMeasurements);
 		}
 
 		[HttpGet("{id:int}")]

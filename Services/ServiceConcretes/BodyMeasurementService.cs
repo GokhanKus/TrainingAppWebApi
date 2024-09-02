@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.DTOs.BodyMeasurement;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Repositories.UnitOfWork;
 using Services.Exceptions;
 
@@ -15,13 +16,16 @@ namespace Services.ServiceConcretes
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 		}
-		public async Task<IEnumerable<BodyMeasurement>?> GetAllBodyMeasurementsByUserIdAsync(string userId, bool trackChanges)
+		public async Task<(IEnumerable<BodyMeasurement>? bodyMeasurements, MetaData metaData)> GetAllBodyMeasurementsByUserIdAsync(BodyMeasurementParameters bodyMeasurementParameters, string userId, bool trackChanges)
 		{
 			if (userId is null)
 				throw new ArgumentNullException($"any body measurement could not found which is belong to the user with {userId}");
 
-			var allBodyMeasurementsOfUser = await _unitOfWork.BodyMeasurementRepository.GetAllBodyMeasurementsByUserIdAsync(userId, trackChanges);
-			return allBodyMeasurementsOfUser;
+			var bodyMeasurementsWithMetaData = await _unitOfWork.BodyMeasurementRepository
+				.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, trackChanges);
+
+			var bodyMeasurementsDto = _mapper.Map<IEnumerable<BodyMeasurement>>(bodyMeasurementsWithMetaData);
+			return (bodyMeasurementsDto, bodyMeasurementsWithMetaData.MetaData);
 		}
 		public async Task<BodyMeasurement?> GetOneBodyMeasurementByUserIdAsync(int id, string userId, bool trackChanges)
 		{
