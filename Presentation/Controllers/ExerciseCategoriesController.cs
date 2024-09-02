@@ -43,7 +43,7 @@ namespace Presentation.Controllers
 		[HttpPut]
 		public async Task<IActionResult> UpdateOneExerciseCategoryAsync([FromBody] ExerciseCategoryDtoForUpdate exerciseCategoryDto)
 		{
-			await _exerciseCategoryService.UpdateExerciseCategoryAsync(exerciseCategoryDto, true);
+			await _exerciseCategoryService.UpdateExerciseCategoryAsync(exerciseCategoryDto, false); //false
 			return Ok();
 		}
 

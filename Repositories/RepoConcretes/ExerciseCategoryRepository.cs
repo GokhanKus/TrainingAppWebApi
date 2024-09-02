@@ -8,7 +8,7 @@ namespace Repositories.RepoConcretes
 	public sealed class ExerciseCategoryRepository : BaseRepository<ExerciseCategory>, IExerciseCategoryRepository
 	{
 		public ExerciseCategoryRepository(RepositoryContext context) : base(context) { }
-		public async Task AddOneExerciseCategory(ExerciseCategory exerciseCategory) => await AddAsync(exerciseCategory);
+		public async Task AddOneExerciseCategoryAsync(ExerciseCategory exerciseCategory) => await AddAsync(exerciseCategory);
 		public void DeleteOneExerciseCategory(ExerciseCategory exerciseCategory) => Delete(exerciseCategory);
 		public void UpdateOneExerciseCategory(ExerciseCategory exerciseCategory) => Update(exerciseCategory);
 		public async Task<IEnumerable<ExerciseCategory>?> GetAllExerciseCategoriesAsync(bool trackChanges)

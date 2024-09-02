@@ -14,9 +14,9 @@ namespace Repositories.MemoryCachedRepos
             _memoryCache = memoryCache;
         }
 
-        public async Task AddOneExerciseCategory(ExerciseCategory exerciseCategory)
+        public async Task AddOneExerciseCategoryAsync(ExerciseCategory exerciseCategory)
         {
-            await _decorated.AddOneExerciseCategory(exerciseCategory);
+            await _decorated.AddOneExerciseCategoryAsync(exerciseCategory);
             _memoryCache.Remove("AllExerciseCategories");
         }
         public void DeleteOneExerciseCategory(ExerciseCategory exerciseCategory)

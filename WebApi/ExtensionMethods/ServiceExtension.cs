@@ -34,7 +34,8 @@ namespace WebApi.ExtensionMethods
 			//service.Decorate<IBodyMeasurementRepository, CachedBodyMeasurementRepository>(); this is for InMemoryCache
 
 			service.AddScoped<IExerciseCategoryRepository, ExerciseCategoryRepository>();
-			service.Decorate<IExerciseCategoryRepository, CachedExerciseCategoryRepository>();
+			service.Decorate<IExerciseCategoryRepository, RedisCacheExerciseCategoryRepository>();
+			//service.Decorate<IExerciseCategoryRepository, CachedExerciseCategoryRepository>();
 
 			service.AddScoped<IExerciseRepository, ExerciseRepository>();
 			service.Decorate<IExerciseRepository, CachedExerciseRepository>();

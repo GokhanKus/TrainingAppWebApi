@@ -1,17 +1,11 @@
 ﻿using Entities.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using Repositories.RepoConcretes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositories.DistributedCacheRepos
 {
-	public class RedisCacheWorkoutRepository : IWorkoutRepository
+	public sealed class RedisCacheWorkoutRepository : IWorkoutRepository
 	{
 		private readonly IWorkoutRepository _decorated;
 		private readonly IDistributedCache _redisCache;

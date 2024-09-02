@@ -18,7 +18,7 @@ namespace Services.ServiceConcretes
 		public async Task<ExerciseCategory> AddExerciseCategoryAsync(ExerciseCategoryDtoForInsertion exerciseCategoryDto)
 		{
 			var exerciseCategory = _mapper.Map<ExerciseCategory>(exerciseCategoryDto);
-			await _unitOfWork.ExerciseCategoryRepository.AddOneExerciseCategory(exerciseCategory);
+			await _unitOfWork.ExerciseCategoryRepository.AddOneExerciseCategoryAsync(exerciseCategory);
 			await _unitOfWork.SaveChangesAsync();
 			return exerciseCategory;
 		}
@@ -52,7 +52,8 @@ namespace Services.ServiceConcretes
 			entity = _mapper.Map(exerciseCategoryDto, entity);
 
 			//izlenen nesne(trackChanges = true ise) degisiklerden sonra Update() olmadan da dogrudan save edilebilir
-			//_unitOfWork.ExerciseCategoryRepository.UpdateOneExerciseCategory(entity);
+			//ama redis cache problem oluyordu o yuzden update metodu calissin
+			_unitOfWork.ExerciseCategoryRepository.UpdateOneExerciseCategory(entity);
 			await _unitOfWork.SaveChangesAsync();
 		}
 		private async Task<ExerciseCategory> GetOneExerciseCategoryByIdAndCheckExist(int id, bool trackChanges)

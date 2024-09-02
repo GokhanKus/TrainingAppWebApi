@@ -6,7 +6,7 @@ using Repositories.RepoConcretes;
 
 namespace Repositories.DistributedCacheRepos
 {
-	public class RedisCacheBodyMeasurementRepository : IBodyMeasurementRepository
+	public sealed class RedisCacheBodyMeasurementRepository : IBodyMeasurementRepository
 	{
 		private readonly IBodyMeasurementRepository _decorated;
 		private readonly IDistributedCache _redisCache;
