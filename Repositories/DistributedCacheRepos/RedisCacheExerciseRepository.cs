@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using Repositories.RepoConcretes;
@@ -19,18 +20,21 @@ namespace Repositories.DistributedCacheRepos
 		public async Task AddOneExerciseAsync(Exercise exercise)
 		{
 			await _decorated.AddOneExerciseAsync(exercise);
-			ClearCache();
+
+			var pageNumber = await GetPageNumberOfExercise();
+			var listCacheKey = $"AllExercises_Page_{pageNumber}";
+			await _redisCache.RemoveAsync(listCacheKey);
 		}
 
-		public async Task<IEnumerable<Exercise>?> GetAllExercisesAsync(bool trackChanges)
+		public async Task<PagedList<Exercise>?> GetAllExercisesAsync(ExerciseParameters exerciseParameters, bool trackChanges)
 		{
-			var listCacheKey = $"AllExercises";
+			var listCacheKey = $"AllExercises_Page_{exerciseParameters.PageNumber}";
 			var cachedData = await _redisCache.GetStringAsync(listCacheKey);
 
-			IEnumerable<Exercise>? exercises;
+			PagedList<Exercise>? exercises;
 			if (string.IsNullOrEmpty(cachedData))
 			{
-				exercises = await _decorated.GetAllExercisesAsync(trackChanges);
+				exercises = await _decorated.GetAllExercisesAsync(exerciseParameters, trackChanges);
 				if (exercises is null)
 					return null;
 
@@ -38,7 +42,7 @@ namespace Repositories.DistributedCacheRepos
 				await _redisCache.SetStringAsync(listCacheKey, serializedObjects);
 				return exercises;
 			}
-			exercises = JsonConvert.DeserializeObject<IEnumerable<Exercise>>(cachedData);
+			exercises = JsonConvert.DeserializeObject<PagedList<Exercise>>(cachedData);
 			return exercises;
 		}
 
@@ -71,16 +75,32 @@ namespace Repositories.DistributedCacheRepos
 			exercise = JsonConvert.DeserializeObject<Exercise>(cachedData);
 			return exercise;
 		}
-
 		public void UpdateOneExercise(Exercise exercise)
 		{
 			_decorated.UpdateOneExercise(exercise);
-			ClearCache(exercise.Id);
+			ClearCacheAsync(exercise.Id).Wait();
 		}
 		public void DeleteOneExercise(Exercise exercise)
 		{
 			_decorated.DeleteOneExercise(exercise);
-			ClearCache(exercise.Id);
+			ClearCacheAsync(exercise.Id).Wait();
+		}
+		private async Task ClearCacheAsync(int id)
+		{
+			var pageNumbers = await GetPageNumberOfExercise();
+
+			for (int pageNumber = 1; pageNumber <= pageNumbers; pageNumber++)
+			{
+				var listCacheKey = $"AllExercises_Page_{pageNumber}";
+				await _redisCache.RemoveAsync(listCacheKey);
+			}
+
+			var cacheKeyWithCategory = $"ExerciseWithCategoryById_{id}";
+			await _redisCache.RemoveAsync(cacheKeyWithCategory);
+
+			var cacheKey = $"ExerciseById_{id}";
+			await _redisCache.RemoveAsync(cacheKey);
+
 		}
 		private async Task<Exercise?> AddToRedisCache(Exercise? exercise, string cacheKey)
 		{
@@ -92,20 +112,17 @@ namespace Repositories.DistributedCacheRepos
 			await _redisCache.SetStringAsync(cacheKey, serializedObject);
 			return exercise;
 		}
-		private void ClearCache(int id = 0)
+
+		public async Task<int> ExerciseCountAsync()
 		{
-			var listCacheKey = $"AllExercises";
-			_redisCache.Remove(listCacheKey);
-
-			if (id == 0)
-				return;
-
-			var cacheKeyWithCategory = $"ExerciseWithCategoryById_{id}";
-			_redisCache.Remove(cacheKeyWithCategory);
-
-			var cacheKey = $"ExerciseById_{id}";
-			_redisCache.Remove(cacheKey);
-
+			var exerciseCount = await _decorated.ExerciseCountAsync();
+			return exerciseCount;
+		}
+		private async Task<int> GetPageNumberOfExercise()
+		{
+			var exerciseCount = await ExerciseCountAsync();
+			var pageNumbers = (int)Math.Ceiling((exerciseCount / (double)10));
+			return pageNumbers;
 		}
 	}
 }

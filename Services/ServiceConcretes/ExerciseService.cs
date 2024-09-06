@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.DTOs.Exercise;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Repositories.UnitOfWork;
 using Services.Exceptions;
 
@@ -28,9 +29,9 @@ namespace Services.ServiceConcretes
 			_unitOfWork.ExerciseRepository.DeleteOneExercise(exerciseToDelete);
 			await _unitOfWork.SaveChangesAsync();
 		}
-		public async Task<IEnumerable<Exercise>?> GetAllExercisesAsync(bool trackChanges)
+		public async Task<IEnumerable<Exercise>?> GetAllExercisesAsync(ExerciseParameters exerciseParameters, bool trackChanges)
 		{
-			var exercises = await _unitOfWork.ExerciseRepository.GetAllExercisesAsync(trackChanges);
+			var exercises = await _unitOfWork.ExerciseRepository.GetAllExercisesAsync(exerciseParameters, trackChanges);
 			return exercises;
 		}
 		public async Task<Exercise> GetOneExerciseByIdAsync(int id, bool trackChanges)

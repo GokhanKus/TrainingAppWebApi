@@ -1,9 +1,9 @@
 ﻿using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Repositories.RepoConcretes;
+using System.Linq;
 
 namespace Repositories.DistributedCacheRepos
 {
@@ -11,22 +11,20 @@ namespace Repositories.DistributedCacheRepos
 	{
 		private readonly IBodyMeasurementRepository _decorated;
 		private readonly IDistributedCache _redisCache;
-
 		public RedisCacheBodyMeasurementRepository(IBodyMeasurementRepository distributed, IDistributedCache redisCache)
 		{
 			_decorated = distributed;
 			_redisCache = redisCache;
 		}
-
 		public async Task AddOneBodyMeasurementAsync(string userId, BodyMeasurement bodyMeasurement)
 		{
 			await _decorated.AddOneBodyMeasurementAsync(userId, bodyMeasurement);
+			var pageNumbers = await GetPageNumberOfBodyMeasurement(userId);
 
 			// Cache'yi invalid etmek (temizlemek) için ilgili anahtarı silin
-			var listCacheKey = $"AllBodyMeasurementsByUserId_{userId}";
+			var listCacheKey = $"AllBodyMeasurementsByUserId_{userId}_Page_{pageNumbers}";
 			await _redisCache.RemoveAsync(listCacheKey);
 		}
-
 		public async Task<PagedList<BodyMeasurement>?> GetAllBodyMeasurementsByUserIdAsync(BodyMeasurementParameters bodyMeasurementParameters, string userId, bool trackChanges)
 		{
 			var listCacheKey = $"AllBodyMeasurementsByUserId_{userId}_Page_{bodyMeasurementParameters.PageNumber}";
@@ -45,10 +43,9 @@ namespace Repositories.DistributedCacheRepos
 				return measurements;
 			}
 
-			measurements = JsonConvert.DeserializeObject<PagedList<BodyMeasurement>>(cachedData);
+			measurements = JsonConvert.DeserializeObject<PagedList<BodyMeasurement>?>(cachedData);
 			return measurements;
 		}
-
 		public async Task<BodyMeasurement?> GetOneBodyMeasurementByUserIdAsync(int id, string userId, bool trackChanges)
 		{
 			var cacheKey = $"BodyMeasurementByUserId_{userId}_{id}";
@@ -70,7 +67,6 @@ namespace Repositories.DistributedCacheRepos
 			member = JsonConvert.DeserializeObject<BodyMeasurement>(cachedData);
 			return member;
 		}
-
 		public void UpdateOneBodyMeasurement(string userId, BodyMeasurement bodyMeasurement)
 		{
 			//burada update etmemize gerek yok cunku trackchanges true olarak geliyor sadece service katmanindan buraya yonlendirerek cacheleri temizlemek yeterli
@@ -80,7 +76,6 @@ namespace Repositories.DistributedCacheRepos
 			// Cache'yi invalid etmek (temizlemek) için ilgili anahtarı silin
 			ClearCacheAsync(userId, bodyMeasurement.Id).Wait();
 		}
-
 		public void DeleteOneBodyMeasurement(string userId, BodyMeasurement bodyMeasurement)
 		{
 			//bodyMeasurement.UserId = userId;  // userId kontrol ediliyor
@@ -91,24 +86,26 @@ namespace Repositories.DistributedCacheRepos
 		private async Task ClearCacheAsync(string userId, int id)
 		{
 			var cacheKey = $"BodyMeasurementByUserId_{userId}_{id}";
-			_redisCache.Remove(cacheKey);
+			await _redisCache.RemoveAsync(cacheKey);
 
-			var bodyMeasurementCount = await _decorated.BodyMeasurementCountAsync(userId);
-
-			var pageNumbers = (int)Math.Ceiling((bodyMeasurementCount / (double)10));
-
+			var pageNumbers = await GetPageNumberOfBodyMeasurement(userId);
 
 			for (int pageNumber = 1; pageNumber <= pageNumbers; pageNumber++)
 			{
 				var listCacheKey = $"AllBodyMeasurementsByUserId_{userId}_Page_{pageNumber}";
-				_redisCache.Remove(listCacheKey);
+				await _redisCache.RemoveAsync(listCacheKey);
 			}
 		}
-
 		public async Task<int> BodyMeasurementCountAsync(string userId)
 		{
 			var bodyMeasurementCount = await _decorated.BodyMeasurementCountAsync(userId);
 			return bodyMeasurementCount;
+		}
+		private async Task<int> GetPageNumberOfBodyMeasurement(string userId)
+		{
+			var bodyMeasurementCount = await BodyMeasurementCountAsync(userId);
+			var pageNumbers = (int)Math.Ceiling((bodyMeasurementCount / (double)10));
+			return pageNumbers;
 		}
 	}
 }

@@ -36,10 +36,11 @@ namespace Repositories.RepoBases
 				: await _dbSet.OrderBy(e => e.Id).AsNoTracking().Where(expression).ToListAsync();
 		}
 
-		public async Task<int> CountAsync(Expression<Func<TEntity, bool>> expression)
+		public async Task<int> CountAsync(Expression<Func<TEntity, bool>> expression = null) //parametre verilmezse default olarak null olsun
 		{
-			return await _dbSet.Where(expression).CountAsync();
-				
+			return expression is null
+				? await _dbSet.CountAsync()
+				: await _dbSet.Where(expression).CountAsync();
 		}
 	}
 }

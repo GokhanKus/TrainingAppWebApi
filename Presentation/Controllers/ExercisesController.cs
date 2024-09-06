@@ -1,6 +1,8 @@
 ﻿using Entities.DTOs.Exercise;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Presentation.ActionFilters;
 using Services.ServiceConcretes;
 
@@ -19,10 +21,13 @@ namespace Presentation.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAllExercisesAsync()
+		public async Task<IActionResult> GetAllExercisesAsync([FromQuery] ExerciseParameters exerciseParameters)
 		{
-			var exercises = await _exerciseService.GetAllExercisesAsync(false);
-			return Ok(exercises);
+			var pagedResult = await _exerciseService.GetAllExercisesAsync(exerciseParameters, false);
+			//Response.Headers["X-Pagination"] = JsonConvert.SerializeObject(pagedResult.metaData);
+			return Ok(pagedResult);
+			//var exercises = await _exerciseService.GetAllExercisesAsync(false);
+			//return Ok(exercises);
 		}
 
 		[HttpGet("{id:int}/basic")]
