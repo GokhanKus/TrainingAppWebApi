@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using Repositories.RepoConcretes;
@@ -19,28 +20,30 @@ namespace Repositories.DistributedCacheRepos
 		{
 			await _decorated.AddWorkoutAsync(userId, workout);
 
-			var listCacheKey = $"AllWorkoutsByUserId_{userId}";
+			var pageNumber = await GetPageNumberOfWorkout(userId);
+			var listCacheKey = $"AllWorkoutsByUserId_{userId}_Page_{pageNumber}";
 			await _redisCache.RemoveAsync(listCacheKey);
 		}
 
-		public async Task<IEnumerable<Workout>?> GetAllWorkoutsByUserIdAsync(string userId, bool trackChanges)
+		public async Task<PagedList<Workout>?> GetAllWorkoutsByUserIdAsync(WorkoutParameters workoutParameters, string userId, bool trackChanges)
 		{
-			var listCacheKey = $"AllWorkoutsByUserId_{userId}";
+			var listCacheKey = $"AllWorkoutsByUserId_{userId}_Page_{workoutParameters.PageNumber}";
 			var cachedData = await _redisCache.GetStringAsync(listCacheKey);
 
-			IEnumerable<Workout>? workouts;
+			PagedList<Workout>? workouts;
 			if (string.IsNullOrEmpty(cachedData))
 			{
-				workouts = await _decorated.GetAllWorkoutsByUserIdAsync(userId, trackChanges);
+				workouts = await _decorated.GetAllWorkoutsByUserIdAsync(workoutParameters, userId, trackChanges);
 
-				if (workouts is null)
+				//gelen veri null ise veya count = 0 ise null olarak donsun, cunku null veriyi cachelemenin anlami yok
+				if (workouts is null || workouts.Count == 0)
 					return null;
 
 				var serializedObjects = JsonConvert.SerializeObject(workouts);
 				await _redisCache.SetStringAsync(listCacheKey, serializedObjects);
 				return workouts;
 			}
-			workouts = JsonConvert.DeserializeObject<IEnumerable<Workout>>(cachedData);
+			workouts = JsonConvert.DeserializeObject<PagedList<Workout>>(cachedData);
 			return workouts;
 		}
 
@@ -79,21 +82,23 @@ namespace Repositories.DistributedCacheRepos
 		public void DeleteWorkout(string userId, Workout workout)
 		{
 			_decorated.DeleteWorkout(userId, workout);
-			ClearCache(userId, workout.Id);
+			ClearCacheAsync(userId, workout.Id).Wait();
 		}
 
-		private void ClearCache(string userId, int id)
+		private async Task ClearCacheAsync(string userId, int id)
 		{
 			var cacheKey = $"WorkoutByUserId_{userId}_{id}";
-			_redisCache.Remove(cacheKey);
-
-			var listCacheKey = $"AllWorkoutsByUserId_{userId}";
-			_redisCache.Remove(listCacheKey);
-
+			await _redisCache.RemoveAsync(cacheKey);
 			var cacheKeyWithExercise = $"WorkoutWithExerciseByUserId_{userId}_{id}";
-			_redisCache.Remove(cacheKeyWithExercise);
-		}
+			await _redisCache.RemoveAsync(cacheKeyWithExercise);
 
+			var pageNumbers = await GetPageNumberOfWorkout(userId);
+			for (int pageNumber = pageNumbers; pageNumber <= pageNumbers; pageNumber++)
+			{
+				var listCacheKey = $"AllWorkoutsByUserId_{userId}_Page_{pageNumber}";
+				await _redisCache.RemoveAsync(listCacheKey);
+			}
+		}
 		private async Task<Workout?> AddToRedisCache(Workout? workout, string cacheKey)
 		{
 			if (workout is null)
@@ -104,6 +109,17 @@ namespace Repositories.DistributedCacheRepos
 
 			await _redisCache.SetStringAsync(cacheKey, serializedObject);
 			return workout;
+		}
+		public async Task<int> WorkoutCountAsync(string userId)
+		{
+			var workoutCount = await _decorated.WorkoutCountAsync(userId);
+			return workoutCount;
+		}
+		private async Task<int> GetPageNumberOfWorkout(string userId)
+		{
+			var workoutCount = await WorkoutCountAsync(userId);
+			var pageNumbers = (int)Math.Ceiling((workoutCount / (double)10));
+			return pageNumbers;
 		}
 	}
 }

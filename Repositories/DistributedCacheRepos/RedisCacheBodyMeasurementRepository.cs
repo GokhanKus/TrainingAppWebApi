@@ -35,7 +35,7 @@ namespace Repositories.DistributedCacheRepos
 			{
 				measurements = await _decorated.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, trackChanges);
 
-				if (measurements is null)
+				if (measurements is null || measurements.Count == 0)
 					return null;
 
 				var serializedObjects = JsonConvert.SerializeObject(measurements);

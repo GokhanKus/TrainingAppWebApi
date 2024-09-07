@@ -1,5 +1,6 @@
 ﻿using Entities.DTOs.ExerciseCategory;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,10 +25,13 @@ namespace Presentation.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAllWorkoutsAsync()
+		public async Task<IActionResult> GetAllWorkoutsAsync([FromQuery] WorkoutParameters workoutParameters)
 		{
 			var userId = GetUserId();
-			var measurementWithUser = await _workoutService.GetAllWorkoutByUserIdAsync(userId, false);
+			if (userId is null)
+				return Unauthorized();
+
+			var measurementWithUser = await _workoutService.GetAllWorkoutByUserIdAsync(workoutParameters, userId, false);
 			return Ok(measurementWithUser);
 		}
 

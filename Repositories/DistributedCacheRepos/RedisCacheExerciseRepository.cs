@@ -35,7 +35,7 @@ namespace Repositories.DistributedCacheRepos
 			if (string.IsNullOrEmpty(cachedData))
 			{
 				exercises = await _decorated.GetAllExercisesAsync(exerciseParameters, trackChanges);
-				if (exercises is null)
+				if (exercises is null || exercises.Count == 0)
 					return null;
 
 				var serializedObjects = JsonConvert.SerializeObject(exercises);

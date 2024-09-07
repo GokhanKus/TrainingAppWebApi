@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Context;
 using Repositories.RepoBases;
@@ -23,9 +24,11 @@ namespace Repositories.RepoConcretes
 			Delete(workout);
 		}
 
-		public async Task<IEnumerable<Workout>?> GetAllWorkoutsByUserIdAsync(string userId, bool trackChanges)
+		public async Task<PagedList<Workout>?> GetAllWorkoutsByUserIdAsync(WorkoutParameters workoutParameters, string userId, bool trackChanges)
 		{
-			return await GetAllByConditionAsync(w => w.UserId == userId, trackChanges);
+			var allWorkouts = await GetAllByConditionAsync(w => w.UserId == userId, trackChanges);
+			return PagedList<Workout>.ToPagedList(allWorkouts, workoutParameters.PageNumber, workoutParameters.PageSize);
+			//return await GetAllByConditionAsync(w => w.UserId == userId, trackChanges);
 		}
 
 		public async Task<Workout?> GetOneWorkoutByUserIdAsync(int id, string userId, bool trackChanges)
@@ -42,6 +45,12 @@ namespace Repositories.RepoConcretes
 		{
 			workout.UserId = userId;
 			Update(workout);
+		}
+
+		public async Task<int> WorkoutCountAsync(string userId)
+		{
+			var workoutCount = await CountAsync(w => w.UserId == userId);
+			return workoutCount;
 		}
 	}
 }

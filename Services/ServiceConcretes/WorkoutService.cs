@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.DTOs.ExerciseCategory;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Repositories.UnitOfWork;
 using Services.Exceptions;
 
@@ -41,12 +42,12 @@ namespace Services.ServiceConcretes
 			_unitOfWork.WorkoutRepository.DeleteWorkout(userId, existingWorkout);
 			await _unitOfWork.SaveChangesAsync();
 		}
-		public async Task<IEnumerable<Workout>?> GetAllWorkoutByUserIdAsync(string userId, bool trackChanges)
+		public async Task<IEnumerable<Workout>?> GetAllWorkoutByUserIdAsync(WorkoutParameters workoutParameters, string userId, bool trackChanges)
 		{
 			if (userId is null)
 				throw new ArgumentNullException($"any workout could not found which is belong to the user with {userId}");
 
-			var allWorkoutsOfUser = await _unitOfWork.WorkoutRepository.GetAllWorkoutsByUserIdAsync(userId, trackChanges);
+			var allWorkoutsOfUser = await _unitOfWork.WorkoutRepository.GetAllWorkoutsByUserIdAsync(workoutParameters, userId, trackChanges);
 			return allWorkoutsOfUser;
 		}
 		public async Task<Workout?> GetOneWorkoutByUserIdAsync(int id, string userId, bool trackChanges)
