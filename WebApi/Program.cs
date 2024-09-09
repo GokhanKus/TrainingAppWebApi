@@ -26,7 +26,9 @@ namespace WebApi
 			builder.Services.AddAutoMapper(typeof(MappingProfile)); // services/Mapper/MappingProfile
 																	//nlogu baslatip nlog.config dosyasindaki yapýlandirmayi yukler
 
-		builder.Services.ActionFilterInjections();
+			builder.Services.ConfigureCors();
+			builder.Services.DataShaperInjections();
+			builder.Services.ActionFilterInjections();
 			builder.Services.SqlConfiguration(builder.Configuration);
 			builder.Services.RepositoryInjections();
 			builder.Services.ServiceInjections();

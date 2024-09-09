@@ -29,12 +29,9 @@ namespace Presentation.Controllers
 		public async Task<IActionResult> GetAllBodyMeasurementsAsync([FromQuery] BodyMeasurementParameters bodyMeasurementParameters)//body-measurement?pageNumber=2&pageSize=10
 		{
 			var userId = GetUserId();
-			//var measurementWithUser = await _bodyMeasurementService
-			//	.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, false);
-			//return Ok(measurementWithUser);
 			var pagedResult = await _bodyMeasurementService.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, false);
-			Response.Headers["X-Pagination"] = JsonConvert.SerializeObject(pagedResult.metaData);
-			return Ok(pagedResult.bodyMeasurements);
+			//Response.Headers["X-Pagination"] = JsonConvert.SerializeObject(pagedResult.metaData);
+			return Ok(pagedResult);
 		}
 
 		[HttpGet("{id:int}")]

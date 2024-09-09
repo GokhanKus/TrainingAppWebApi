@@ -4,6 +4,8 @@ using Entities.Models;
 using Entities.RequestFeatures;
 using Repositories.UnitOfWork;
 using Services.Exceptions;
+using Services.ServiceContracts;
+using System.Dynamic;
 
 namespace Services.ServiceConcretes
 {
@@ -11,12 +13,14 @@ namespace Services.ServiceConcretes
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
-		public BodyMeasurementService(IUnitOfWork unitOfWork, IMapper mapper)
+		private readonly IDataShaper<BodyMeasurement> _shaper;
+		public BodyMeasurementService(IUnitOfWork unitOfWork, IMapper mapper, IDataShaper<BodyMeasurement> shaper)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
+			_shaper = shaper;
 		}
-		public async Task<(IEnumerable<BodyMeasurement>? bodyMeasurements, MetaData metaData)> GetAllBodyMeasurementsByUserIdAsync(BodyMeasurementParameters bodyMeasurementParameters, string userId, bool trackChanges)
+		public async Task<IEnumerable<ExpandoObject>?> GetAllBodyMeasurementsByUserIdAsync(BodyMeasurementParameters bodyMeasurementParameters, string userId, bool trackChanges)
 		{
 			if (userId is null)
 				throw new ArgumentNullException($"any body measurement could not found which is belong to the user with {userId}");
@@ -25,7 +29,8 @@ namespace Services.ServiceConcretes
 				.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, trackChanges);
 
 			var bodyMeasurementsDto = _mapper.Map<IEnumerable<BodyMeasurement>>(bodyMeasurementsWithMetaData);
-			return (bodyMeasurementsDto, bodyMeasurementsWithMetaData.MetaData);
+			var shapedData = _shaper.ShapeData(bodyMeasurementsDto, bodyMeasurementParameters.Fields);
+			return shapedData;
 		}
 		public async Task<BodyMeasurement?> GetOneBodyMeasurementByUserIdAsync(int id, string userId, bool trackChanges)
 		{

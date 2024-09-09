@@ -4,6 +4,8 @@ using Entities.Models;
 using Entities.RequestFeatures;
 using Repositories.UnitOfWork;
 using Services.Exceptions;
+using Services.ServiceContracts;
+using System.Dynamic;
 
 namespace Services.ServiceConcretes
 {
@@ -11,10 +13,12 @@ namespace Services.ServiceConcretes
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
-		public ExerciseService(IUnitOfWork unitOfWork, IMapper mapper)
+		private readonly IDataShaper<Exercise> _shaper;
+		public ExerciseService(IUnitOfWork unitOfWork, IMapper mapper, IDataShaper<Exercise> shaper)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
+			_shaper = shaper;
 		}
 		public async Task<Exercise> AddExerciseAsync(ExerciseDtoForInsertion exerciseDto)
 		{
@@ -29,10 +33,12 @@ namespace Services.ServiceConcretes
 			_unitOfWork.ExerciseRepository.DeleteOneExercise(exerciseToDelete);
 			await _unitOfWork.SaveChangesAsync();
 		}
-		public async Task<IEnumerable<Exercise>?> GetAllExercisesAsync(ExerciseParameters exerciseParameters, bool trackChanges)
+		public async Task<IEnumerable<ExpandoObject>?> GetAllExercisesAsync(ExerciseParameters exerciseParameters, bool trackChanges)
 		{
 			var exercises = await _unitOfWork.ExerciseRepository.GetAllExercisesAsync(exerciseParameters, trackChanges);
-			return exercises;
+			var exercisesDto = _mapper.Map<IEnumerable<Exercise>>(exercises);
+			var shapedData = _shaper.ShapeData(exercisesDto, exerciseParameters.Fields);
+			return shapedData;
 		}
 		public async Task<Exercise> GetOneExerciseByIdAsync(int id, bool trackChanges)
 		{

@@ -12,12 +12,12 @@ namespace Services.ServiceConcretes
 		{
 			Properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 		}
-		public IEnumerable<ExpandoObject> ShapeData(IEnumerable<T> entities, string fieldsString)
+		public IEnumerable<ExpandoObject> ShapeData(IEnumerable<T> entities, string? fieldsString)
 		{
 			var requiredFields = GetRequiredFiels(fieldsString);
 			return FetchDataForEntity(entities, requiredFields);
 		}
-		public ExpandoObject ShapeData(T entity, string fieldsString)
+		public ExpandoObject ShapeData(T entity, string? fieldsString)
 		{
 			var requiredParameters = GetRequiredFiels(fieldsString);
 			return FetchDataForEntity(entity, requiredParameters);

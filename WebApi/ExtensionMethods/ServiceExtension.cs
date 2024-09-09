@@ -139,5 +139,11 @@ namespace WebApi.ExtensionMethods
 				});
 			});
 		}
+		public static void DataShaperInjections(this IServiceCollection services)
+		{
+			services.AddScoped<IDataShaper<BodyMeasurement>, DataShaper<BodyMeasurement>>();
+			services.AddScoped<IDataShaper<Exercise>, DataShaper<Exercise>>();
+			services.AddScoped<IDataShaper<Workout>, DataShaper<Workout>>();
+		}
 	}
 }

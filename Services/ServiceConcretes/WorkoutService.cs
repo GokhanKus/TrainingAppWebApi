@@ -4,6 +4,8 @@ using Entities.Models;
 using Entities.RequestFeatures;
 using Repositories.UnitOfWork;
 using Services.Exceptions;
+using Services.ServiceContracts;
+using System.Dynamic;
 
 namespace Services.ServiceConcretes
 {
@@ -11,10 +13,12 @@ namespace Services.ServiceConcretes
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
-		public WorkoutService(IUnitOfWork unitOfWork, IMapper mapper)
+		private readonly IDataShaper<Workout> _shaper;
+		public WorkoutService(IUnitOfWork unitOfWork, IMapper mapper, IDataShaper<Workout> shaper)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
+			_shaper = shaper;
 		}
 		public async Task AddOneWorkoutAsync(string userId, WorkoutDtoForInsertion workoutDto)
 		{
@@ -42,13 +46,15 @@ namespace Services.ServiceConcretes
 			_unitOfWork.WorkoutRepository.DeleteWorkout(userId, existingWorkout);
 			await _unitOfWork.SaveChangesAsync();
 		}
-		public async Task<IEnumerable<Workout>?> GetAllWorkoutByUserIdAsync(WorkoutParameters workoutParameters, string userId, bool trackChanges)
+		public async Task<IEnumerable<ExpandoObject>?> GetAllWorkoutByUserIdAsync(WorkoutParameters workoutParameters, string userId, bool trackChanges)
 		{
 			if (userId is null)
 				throw new ArgumentNullException($"any workout could not found which is belong to the user with {userId}");
 
 			var allWorkoutsOfUser = await _unitOfWork.WorkoutRepository.GetAllWorkoutsByUserIdAsync(workoutParameters, userId, trackChanges);
-			return allWorkoutsOfUser;
+			var workoutDto = _mapper.Map<IEnumerable<Workout>>(allWorkoutsOfUser);
+			var shapedData = _shaper.ShapeData(workoutDto, workoutParameters.Fields);
+			return shapedData;
 		}
 		public async Task<Workout?> GetOneWorkoutByUserIdAsync(int id, string userId, bool trackChanges)
 		{
