@@ -1,7 +1,9 @@
-﻿using Entities.Models;
+﻿using AspNetCoreRateLimit;
+using Entities.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Presentation.ActionFilters;
 using Repositories.Context;
@@ -139,11 +141,25 @@ namespace WebApi.ExtensionMethods
 				});
 			});
 		}
-		public static void DataShaperInjections(this IServiceCollection services)
+		public static void DataShaperInjections(this IServiceCollection service)
 		{
-			services.AddScoped<IDataShaper<BodyMeasurement>, DataShaper<BodyMeasurement>>();
-			services.AddScoped<IDataShaper<Exercise>, DataShaper<Exercise>>();
-			services.AddScoped<IDataShaper<Workout>, DataShaper<Workout>>();
+			service.AddScoped<IDataShaper<BodyMeasurement>, DataShaper<BodyMeasurement>>();
+			service.AddScoped<IDataShaper<Exercise>, DataShaper<Exercise>>();
+			service.AddScoped<IDataShaper<Workout>, DataShaper<Workout>>();
+		}
+		public static void ConfigureRateLimiting(this IServiceCollection service, IConfiguration config)
+		{
+			service.Configure<IpRateLimitOptions>(config.GetSection("IpRateLimiting"));
+
+			service.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+			service.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+			service.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+			service.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+			//Bu, rate limit istek sayacının bellekte saklanacağını belirtir.
+			//Bu, IP adresi tabanlı politikaların bellekte saklanacağını belirtir.
+			//Bu, genel rate limit yapılandırmasını sağlar.
+			//Rate limit isteklerinin nasıl işleneceğini belirten bir işlem stratejisi eklenir.Bu örnekte, AsyncKeyLockProcessingStrategy kullanılmaktadır.
+			service.AddInMemoryRateLimiting();
 		}
 	}
 }

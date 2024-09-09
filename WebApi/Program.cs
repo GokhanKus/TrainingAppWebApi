@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AspNetCoreRateLimit;
+using Newtonsoft.Json;
 using NLog;
 using Services.Mapper;
 using Services.ServiceContracts;
@@ -39,8 +40,10 @@ namespace WebApi
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
-
 			builder.Services.AddMemoryCache();
+			builder.Services.AddHttpContextAccessor();
+			builder.Services.ConfigureRateLimiting(builder.Configuration);
+
 			builder.Services.AddRedisImplementation(builder.Configuration);
 
 			var app = builder.Build(); //app'i elde ettigimiz asama bu satir'dan sonra ihtiyac duyulan servisler alinabilir.
@@ -57,6 +60,8 @@ namespace WebApi
 
 			if (app.Environment.IsProduction())
 				app.UseHsts();
+
+			app.UseIpRateLimiting();
 
 			app.UseCors("CorsPolicy");
 
