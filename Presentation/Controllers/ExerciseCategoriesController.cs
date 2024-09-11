@@ -63,5 +63,12 @@ namespace Presentation.Controllers
 			var newExercise = await _exerciseCategoryService.AddExerciseCategoryAsync(exerciseCategoryDto);
 			return StatusCode(201, newExercise);
 		}
+
+		[HttpOptions]
+		public IActionResult GetExerciseCategoryOptions()
+		{
+			Response.Headers.Add("Allow", "GET, POST, PUT, DELETE, HEAD, OPTIONS");
+			return Ok();
+		}
 	}
 }

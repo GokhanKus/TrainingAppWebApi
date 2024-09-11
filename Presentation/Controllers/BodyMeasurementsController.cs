@@ -4,6 +4,7 @@ using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using Presentation.ActionFilters;
 using Services.ServiceConcretes;
@@ -83,6 +84,16 @@ namespace Presentation.Controllers
 		private string GetUserId()
 		{
 			return User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+		}
+
+		[HttpOptions]
+		public IActionResult GetBodyMeasurementOptions()
+		{
+			Response.Headers.Add("Allow", "GET, POST, PUT, DELETE, HEAD, OPTIONS");
+			return Ok();
+
+			//[HttpOptions]Http methodu, belirli bir route için desteklenen HTTP metodlarını tanımlamak için kullanılır.
+			//yani biz bu controllerda get, post vs hepsini kullandik onu belirtiyoruz.
 		}
 	}
 }

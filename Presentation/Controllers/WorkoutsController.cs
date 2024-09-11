@@ -83,5 +83,12 @@ namespace Presentation.Controllers
 		{
 			return User.FindFirstValue(ClaimTypes.NameIdentifier);
 		}
+
+		[HttpOptions]
+		public IActionResult GetWorkoutOptions()
+		{
+			Response.Headers.Add("Allow", "GET, POST, DELETE, HEAD, OPTIONS");
+			return Ok();
+		}
 	}
 }

@@ -80,5 +80,12 @@ namespace Presentation.Controllers
 			//ayrıca tokenlerin expiry olma (sona erme) süreleri vardır refresh token sayesinde sanki istemci hic kopmamis gibi yeni tokeniyle istek atmaya devam edebilir
 			//hem guvenlık anlaminda hem de tokenin suresi bittiginde tekrar login olma zorunlulugu olmadan refresh token sayesinde isteklere devam edebilir
 		}
+
+		[HttpOptions]
+		public IActionResult GetAccountOptions()
+		{
+			Response.Headers.Add("Allow", "POST, DELETE, HEAD, OPTIONS");
+			return Ok();
+		}
 	}
 }
