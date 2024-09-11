@@ -20,6 +20,7 @@ namespace Presentation.Controllers
 			_exerciseService = exerciseService;
 		}
 
+		[HttpHead]
 		[HttpGet]
 		public async Task<IActionResult> GetAllExercisesAsync([FromQuery] ExerciseParameters exerciseParameters)
 		{

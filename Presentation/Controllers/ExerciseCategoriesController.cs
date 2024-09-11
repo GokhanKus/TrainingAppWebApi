@@ -17,6 +17,7 @@ namespace Presentation.Controllers
 			_exerciseCategoryService = exerciseCategoryService;
 		}
 
+		[HttpHead]
 		[HttpGet]
 		public async Task<IActionResult> GetAllExerciseCategoriesAsync()
 		{

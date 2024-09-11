@@ -26,6 +26,7 @@ namespace Presentation.Controllers
 			_userManager = userManager;
 		}
 
+		[HttpHead]
 		[HttpGet]
 		public async Task<IActionResult> GetAllBodyMeasurementsAsync([FromQuery] BodyMeasurementParameters bodyMeasurementParameters)//body-measurement?pageNumber=2&pageSize=10
 		{

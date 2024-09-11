@@ -24,6 +24,7 @@ namespace Presentation.Controllers
 			_userManager = userManager;
 		}
 
+		[HttpHead]
 		[HttpGet]
 		public async Task<IActionResult> GetAllWorkoutsAsync([FromQuery] WorkoutParameters workoutParameters)
 		{
