@@ -27,7 +27,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpHead]
-		[HttpGet]
+		[HttpGet(Name = "GetAllBodyMeasurementsAsync")]
 		public async Task<IActionResult> GetAllBodyMeasurementsAsync([FromQuery] BodyMeasurementParameters bodyMeasurementParameters)//body-measurement?pageNumber=2&pageSize=10
 		{
 			var userId = GetUserId();
@@ -47,7 +47,7 @@ namespace Presentation.Controllers
 			return Ok(measurementWithUser);
 		}
 
-		[HttpPost]
+		[HttpPost(Name = "AddBodyMeasurementAsync")]
 		[ValidationFilter]
 		public async Task<IActionResult> AddBodyMeasurementAsync([FromBody] BodyMeasurementDtoForInsertion bodyMeasurementDto)
 		{

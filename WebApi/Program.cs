@@ -36,6 +36,7 @@ namespace WebApi
 			builder.Services.LoggerServiceInjection();
 			builder.Services.ConfigureIdentityDbContext();
 			builder.Services.ConfigureJWT(builder.Configuration);
+			builder.Services.AddCustomMediaTypes();
 
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();

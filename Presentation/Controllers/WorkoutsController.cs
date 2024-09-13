@@ -25,7 +25,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpHead]
-		[HttpGet]
+		[HttpGet(Name = "GetAllWorkoutsAsync")]
 		public async Task<IActionResult> GetAllWorkoutsAsync([FromQuery] WorkoutParameters workoutParameters)
 		{
 			var userId = GetUserId();
@@ -59,7 +59,7 @@ namespace Presentation.Controllers
 		}
 
 		[ValidationFilter]
-		[HttpPost]
+		[HttpPost(Name = "AddWorkoutAsync")]
 		public async Task<IActionResult> AddWorkoutAsync([FromBody] WorkoutDtoForInsertion workoutDto)
 		{
 			var userId = GetUserId();

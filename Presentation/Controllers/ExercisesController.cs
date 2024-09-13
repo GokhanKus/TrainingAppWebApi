@@ -21,7 +21,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpHead]
-		[HttpGet]
+		[HttpGet(Name = "GetAllExercisesAsync")]
 		public async Task<IActionResult> GetAllExercisesAsync([FromQuery] ExerciseParameters exerciseParameters)
 		{
 			var pagedResult = await _exerciseService.GetAllExercisesAsync(exerciseParameters, false);
@@ -65,7 +65,7 @@ namespace Presentation.Controllers
 
 		[Authorize(Roles = "Admin")]
 		[ValidationFilter]
-		[HttpPost]
+		[HttpPost(Name = "CreateOneExerciseAsync")]
 		public async Task<IActionResult> CreateOneExerciseAsync([FromBody] ExerciseDtoForInsertion exerciseDto)
 		{
 			var newExercise = await _exerciseService.AddExerciseAsync(exerciseDto);

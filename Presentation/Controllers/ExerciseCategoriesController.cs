@@ -18,7 +18,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpHead]
-		[HttpGet]
+		[HttpGet(Name = "GetAllExerciseCategoriesAsync")]
 		public async Task<IActionResult> GetAllExerciseCategoriesAsync()
 		{
 			var exercises = await _exerciseCategoryService.GetAllExercisesCategoriesAsync(false);
@@ -58,7 +58,7 @@ namespace Presentation.Controllers
 
 		[Authorize(Roles = "Admin")]
 		[ValidationFilter]
-		[HttpPost]
+		[HttpPost(Name = "CreateOneExerciseCategoryAsync")]
 		public async Task<IActionResult> CreateOneExerciseCategoryAsync([FromBody] ExerciseCategoryDtoForInsertion exerciseCategoryDto)
 		{
 			var newExercise = await _exerciseCategoryService.AddExerciseCategoryAsync(exerciseCategoryDto);

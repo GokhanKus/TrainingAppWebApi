@@ -2,6 +2,8 @@
 using Entities.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -160,6 +162,22 @@ namespace WebApi.ExtensionMethods
 			//Bu, genel rate limit yapılandırmasını sağlar.
 			//Rate limit isteklerinin nasıl işleneceğini belirten bir işlem stratejisi eklenir.Bu örnekte, AsyncKeyLockProcessingStrategy kullanılmaktadır.
 			service.AddInMemoryRateLimiting();
+		}
+		public static void AddCustomMediaTypes(this IServiceCollection service)
+		{
+			service.Configure<MvcOptions>(config =>
+			{
+				var systemTextJsonOutputFormatter = config.OutputFormatters.OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
+				if (systemTextJsonOutputFormatter is not null)
+				{
+					systemTextJsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.storeapp.apiroot+json");
+				}
+				var xmlOutputFormatter = config.OutputFormatters.OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
+				if (xmlOutputFormatter is not null)
+				{
+					xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.storeapp.apiroot+xml");
+				}
+			});
 		}
 	}
 }
