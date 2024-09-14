@@ -1,19 +1,16 @@
 ﻿using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositories.Extensions
 {
 	public static class BodyMeasurementRepositoryExtension
 	{
-		public static IQueryable<BodyMeasurement> Paginate(this IQueryable<BodyMeasurement> bodyMeasurements, int pageNumber, int pageSize)
+		public static IQueryable<BodyMeasurement> FilterBodyMeasurementsByWeight(this IQueryable<BodyMeasurement> bodyMeasurements, uint? minWeight, uint? maxWeight)
 		{
-			return bodyMeasurements
-				.Skip((pageNumber - 1) * pageSize) // IIIII IIIII IIIII örnegin 3.sayfaya gitmek istersem (3-1) * 5 = 10 tane item atlayacagimi soyluyorum
-				.Take(pageSize);
+			if ((minWeight == 0 || minWeight is null) && (minWeight == 0 || minWeight is null))
+				return bodyMeasurements;
+
+			var filteredBodyMeasurement = bodyMeasurements.Where(b => ((b.Weight >= minWeight) && b.Weight <= maxWeight));
+			return filteredBodyMeasurement;
 		}
 	}
 }

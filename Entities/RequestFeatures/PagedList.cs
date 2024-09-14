@@ -24,12 +24,22 @@ namespace Entities.RequestFeatures
 			};
 			AddRange(items); //List<T>'de gelen degerler PagedList<T>'e tasinacak
 		}
+		//dbden paginagion olarak kısmi verileri ceker
 		public static PagedList<T> ToPagedList(IEnumerable<T> source, int pageNumber, int pageSize)
 		{
 			var count = source.Count();
 			var items = source
 				.Skip((pageNumber - 1) * pageSize) // IIIII IIIII IIIII örnegin 3.sayfaya gitmek istersem (3-1) * 5 = 10 tane item atlayacagimi soyluyorum
 				.Take(pageSize)
+				.ToList();
+			return new PagedList<T>(items, count, pageNumber, pageSize);
+		}
+		//dbden cekilmis cachelenmis verileri filtreler
+		public static PagedList<T> ToPagedListForFilteredData(IEnumerable<T> source, int pageNumber, int pageSize)
+		{
+			var count = source.Count();
+			var items = source
+				.Take(count)
 				.ToList();
 			return new PagedList<T>(items, count, pageNumber, pageSize);
 		}

@@ -2,6 +2,7 @@
 using Entities.RequestFeatures;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using Repositories.Extensions;
 using Repositories.RepoConcretes;
 using System.Linq;
 
@@ -30,21 +31,36 @@ namespace Repositories.DistributedCacheRepos
 			var listCacheKey = $"AllBodyMeasurementsByUserId_{userId}_Page_{bodyMeasurementParameters.PageNumber}";
 			var cachedData = await _redisCache.GetStringAsync(listCacheKey);
 
-			PagedList<BodyMeasurement>? measurements;
 			if (string.IsNullOrEmpty(cachedData))
 			{
-				measurements = await _decorated.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, trackChanges);
+				// Cache'de veri yoksa, veritabanından al
+				var bodyMeasurementsOfUser = await _decorated.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, trackChanges);
 
-				if (measurements is null || measurements.Count == 0)
+				if (bodyMeasurementsOfUser == null || bodyMeasurementsOfUser.Count == 0)
 					return null;
 
-				var serializedObjects = JsonConvert.SerializeObject(measurements);
+				// Veriyi serialize et ve cache'e koy
+				var serializedObjects = JsonConvert.SerializeObject(bodyMeasurementsOfUser);
 				await _redisCache.SetStringAsync(listCacheKey, serializedObjects);
-				return measurements;
+
+				// Veriyi filtreleyip sayfalayın
+				var filteredData = bodyMeasurementsOfUser
+					.AsQueryable()
+					.FilterBodyMeasurementsByWeight(bodyMeasurementParameters.MinWeight, bodyMeasurementParameters.MaxWeight);
+
+				return PagedList<BodyMeasurement>.ToPagedListForFilteredData(filteredData, bodyMeasurementParameters.PageNumber, bodyMeasurementParameters.PageSize);
 			}
 
-			measurements = JsonConvert.DeserializeObject<PagedList<BodyMeasurement>?>(cachedData);
-			return measurements;
+			// Cache'den veriyi deserialize et
+			var measurements = JsonConvert.DeserializeObject<PagedList<BodyMeasurement>>(cachedData);
+
+			// Cache'den alınan veriyi filtreleyip sayfalayın
+			var filteredBodyMeasurements = measurements
+				.AsQueryable()
+				.FilterBodyMeasurementsByWeight(bodyMeasurementParameters.MinWeight, bodyMeasurementParameters.MaxWeight);
+
+			return PagedList<BodyMeasurement>.ToPagedListForFilteredData(filteredBodyMeasurements, bodyMeasurementParameters.PageNumber, bodyMeasurementParameters.PageSize);
+
 		}
 		public async Task<BodyMeasurement?> GetOneBodyMeasurementByUserIdAsync(int id, string userId, bool trackChanges)
 		{

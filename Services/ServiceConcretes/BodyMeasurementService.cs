@@ -22,8 +22,11 @@ namespace Services.ServiceConcretes
 		}
 		public async Task<IEnumerable<ExpandoObject>?> GetAllBodyMeasurementsByUserIdAsync(BodyMeasurementParameters bodyMeasurementParameters, string userId, bool trackChanges)
 		{
+			if (!bodyMeasurementParameters.IsValid) 
+				throw new WeightOutOfRangeBadRequestException();
+
 			if (userId is null)
-				throw new ArgumentNullException($"any body measurement could not found which is belong to the user with {userId}");
+				throw new ArgumentNullException($"any body measurement could not found which is belong to the user with userId: {userId}");
 
 			var bodyMeasurementsWithMetaData = await _unitOfWork.BodyMeasurementRepository
 				.GetAllBodyMeasurementsByUserIdAsync(bodyMeasurementParameters, userId, trackChanges);
