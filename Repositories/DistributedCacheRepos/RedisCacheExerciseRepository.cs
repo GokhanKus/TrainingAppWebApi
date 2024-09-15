@@ -45,12 +45,12 @@ namespace Repositories.DistributedCacheRepos
 			{
 				exercises = JsonConvert.DeserializeObject<PagedList<Exercise>>(cachedData);
 			}
-			return GetFilteredExercisesAndPaginate(exerciseParameters, exercises, out var filteredExercises);
+			return GetFilteredExercisesAndPaginate(exerciseParameters, exercises);
 		}
 
-		private PagedList<Exercise> GetFilteredExercisesAndPaginate(ExerciseParameters exerciseParameters, IEnumerable<Exercise>? exercises, out IQueryable<Exercise>? filteredExercises)
+		private PagedList<Exercise> GetFilteredExercisesAndPaginate(ExerciseParameters exerciseParameters, IEnumerable<Exercise>? exercises )
 		{
-			filteredExercises = exercises
+			var filteredExercises = exercises
 				.AsQueryable()
 				.FilterExerciseByNameOrDescription(exerciseParameters.SearchingTerm).FilterExerciseByDifficulty(exerciseParameters.DifficultyLevel);
 			return PagedList<Exercise>.ToPagedList(filteredExercises, exerciseParameters.PageNumber, exerciseParameters.PageSize);

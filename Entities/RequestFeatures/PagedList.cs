@@ -34,13 +34,5 @@ namespace Entities.RequestFeatures
 				.ToList();
 			return new PagedList<T>(items, count, pageNumber, pageSize);
 		}
-		//dbden cekilmis cachelenmis verileri filtreler
-		public static PagedList<T> ToPagedListForFilteredData(IEnumerable<T> source, int pageNumber, int pageSize)
-		{
-			var count = source.Count();
-			var items = source
-				.ToList();
-			return new PagedList<T>(items, count, pageNumber, pageSize);
-		}
 	}
 }

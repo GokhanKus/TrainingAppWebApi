@@ -15,10 +15,10 @@ namespace Repositories.RepoConcretes
 			await AddAsync(bodyMeasurement);
 		}
 
-		public async Task<PagedList<BodyMeasurement>?> GetAllBodyMeasurementsByUserIdAsync(BodyMeasurementParameters bodyMeasurementParameters, string userId, bool trackChanges)
+		public async Task<IEnumerable<BodyMeasurement>?> GetAllBodyMeasurementsByUserIdAsync(BodyMeasurementParameters bodyMeasurementParameters, string userId, bool trackChanges)
 		{
 			var bodyMeasurementsOfUser = await GetAllByConditionAsync(bm => bm.UserId == userId, trackChanges);
-			return PagedList<BodyMeasurement>.ToPagedList(bodyMeasurementsOfUser, bodyMeasurementParameters.PageNumber, bodyMeasurementParameters.PageSize);
+			return bodyMeasurementsOfUser;
 		}
 
 		public async Task<BodyMeasurement?> GetOneBodyMeasurementByUserIdAsync(int id, string userId, bool trackChanges)
