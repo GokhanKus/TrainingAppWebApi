@@ -37,7 +37,7 @@ namespace Repositories.MemoryCachedRepos
 			throw new NotImplementedException();
 		}
 
-		public async Task<PagedList<Exercise>?> GetAllExercisesAsync(ExerciseParameters exerciseParameters, bool trackChanges)
+		public async Task<IEnumerable<Exercise>?> GetAllExercisesAsync(ExerciseParameters exerciseParameters, bool trackChanges)
 		{
 			var cacheKey = "AllExercises";
 

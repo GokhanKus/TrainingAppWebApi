@@ -4,7 +4,7 @@
 	{
 		const int DefaultPageSize = 10; // Sabit değer 10 olarak ayarlanacak
 		const int maxPageSize = 50; //istemciye max 50 kaynak verilsin
-		public int PageNumber { get; set; }
+		public int PageNumber { get; set; } = 1;
 		//full-property
 		private int _pageSize = DefaultPageSize;
         public int PageSize

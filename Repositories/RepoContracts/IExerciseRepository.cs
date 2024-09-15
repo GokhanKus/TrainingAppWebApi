@@ -5,13 +5,11 @@ namespace Repositories.RepoConcretes
 {
 	public interface IExerciseRepository
 	{
-		Task<PagedList<Exercise>?> GetAllExercisesAsync(ExerciseParameters exerciseParameters, bool trackChanges);
+		Task<IEnumerable<Exercise>?> GetAllExercisesAsync(ExerciseParameters exerciseParameters, bool trackChanges);
 		Task<Exercise?> GetOneExerciseByIdAsync(int id, bool trackChanges);
 		Task<Exercise?> GetOneExerciseWithCategoryAsync(int id);
 		Task AddOneExerciseAsync(Exercise exercise);
 		void UpdateOneExercise(Exercise exercise);
 		void DeleteOneExercise(Exercise exercise);
-		Task<int> ExerciseCountAsync();
-
 	}
 }

@@ -22,41 +22,38 @@ namespace Repositories.DistributedCacheRepos
 		{
 			await _decorated.AddOneExerciseAsync(exercise);
 
-			var pageNumber = await GetPageNumberOfExercise();
-			var listCacheKey = $"AllExercises_Page_{pageNumber}";
+			var listCacheKey = $"AllExercises";
 			await _redisCache.RemoveAsync(listCacheKey);
 		}
 
-		public async Task<PagedList<Exercise>?> GetAllExercisesAsync(ExerciseParameters exerciseParameters, bool trackChanges)
+		public async Task<IEnumerable<Exercise>?> GetAllExercisesAsync(ExerciseParameters exerciseParameters, bool trackChanges)
 		{
-			var listCacheKey = $"AllExercises_Page_{exerciseParameters.PageNumber}";
+			var listCacheKey = $"AllExercises";
 			var cachedData = await _redisCache.GetStringAsync(listCacheKey);
-
-			PagedList<Exercise>? exercises;
-			IQueryable<Exercise>? filteredExercises;
+			IEnumerable<Exercise>? exercises;
 			if (string.IsNullOrEmpty(cachedData))
 			{
+				// Veritabanından ham verileri al ve cache'e kaydet
 				exercises = await _decorated.GetAllExercisesAsync(exerciseParameters, trackChanges);
-				if (exercises is null || exercises.Count == 0)
+				if (exercises == null || exercises.Count() == 0)
 					return null;
 
 				var serializedObjects = JsonConvert.SerializeObject(exercises);
 				await _redisCache.SetStringAsync(listCacheKey, serializedObjects);
-
-				//return exercises;
-				return GetFilteredExercises(exerciseParameters, exercises, out filteredExercises);
 			}
-			exercises = JsonConvert.DeserializeObject<PagedList<Exercise>>(cachedData);
-
-			return GetFilteredExercises(exerciseParameters, exercises, out filteredExercises);
+			else
+			{
+				exercises = JsonConvert.DeserializeObject<PagedList<Exercise>>(cachedData);
+			}
+			return GetFilteredExercisesAndPaginate(exerciseParameters, exercises, out var filteredExercises);
 		}
 
-		private static PagedList<Exercise> GetFilteredExercises(ExerciseParameters exerciseParameters, PagedList<Exercise>? exercises, out IQueryable<Exercise>? filteredExercises)
+		private PagedList<Exercise> GetFilteredExercisesAndPaginate(ExerciseParameters exerciseParameters, IEnumerable<Exercise>? exercises, out IQueryable<Exercise>? filteredExercises)
 		{
 			filteredExercises = exercises
 				.AsQueryable()
 				.FilterExerciseByNameOrDescription(exerciseParameters.SearchingTerm).FilterExerciseByDifficulty(exerciseParameters.DifficultyLevel);
-			return PagedList<Exercise>.ToPagedListForFilteredData(filteredExercises, exerciseParameters.PageNumber, exerciseParameters.PageSize);
+			return PagedList<Exercise>.ToPagedList(filteredExercises, exerciseParameters.PageNumber, exerciseParameters.PageSize);
 		}
 
 		public async Task<Exercise?> GetOneExerciseByIdAsync(int id, bool trackChanges)
@@ -100,13 +97,8 @@ namespace Repositories.DistributedCacheRepos
 		}
 		private async Task ClearCacheAsync(int id)
 		{
-			var pageNumbers = await GetPageNumberOfExercise();
-
-			for (int pageNumber = 1; pageNumber <= pageNumbers; pageNumber++)
-			{
-				var listCacheKey = $"AllExercises_Page_{pageNumber}";
-				await _redisCache.RemoveAsync(listCacheKey);
-			}
+			var listCacheKey = $"AllExercises";
+			await _redisCache.RemoveAsync(listCacheKey);
 
 			var cacheKeyWithCategory = $"ExerciseWithCategoryById_{id}";
 			await _redisCache.RemoveAsync(cacheKeyWithCategory);
@@ -124,18 +116,6 @@ namespace Repositories.DistributedCacheRepos
 				new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 			await _redisCache.SetStringAsync(cacheKey, serializedObject);
 			return exercise;
-		}
-
-		public async Task<int> ExerciseCountAsync()
-		{
-			var exerciseCount = await _decorated.ExerciseCountAsync();
-			return exerciseCount;
-		}
-		private async Task<int> GetPageNumberOfExercise()
-		{
-			var exerciseCount = await ExerciseCountAsync();
-			var pageNumbers = (int)Math.Ceiling((exerciseCount / (double)10));
-			return pageNumbers;
 		}
 	}
 }
