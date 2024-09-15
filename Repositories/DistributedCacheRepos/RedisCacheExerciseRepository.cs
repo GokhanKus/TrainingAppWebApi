@@ -2,6 +2,7 @@
 using Entities.RequestFeatures;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using Repositories.Extensions;
 using Repositories.RepoConcretes;
 
 namespace Repositories.DistributedCacheRepos
@@ -32,6 +33,7 @@ namespace Repositories.DistributedCacheRepos
 			var cachedData = await _redisCache.GetStringAsync(listCacheKey);
 
 			PagedList<Exercise>? exercises;
+			IQueryable<Exercise>? filteredExercises;
 			if (string.IsNullOrEmpty(cachedData))
 			{
 				exercises = await _decorated.GetAllExercisesAsync(exerciseParameters, trackChanges);
@@ -40,10 +42,21 @@ namespace Repositories.DistributedCacheRepos
 
 				var serializedObjects = JsonConvert.SerializeObject(exercises);
 				await _redisCache.SetStringAsync(listCacheKey, serializedObjects);
-				return exercises;
+
+				//return exercises;
+				return GetFilteredExercises(exerciseParameters, exercises, out filteredExercises);
 			}
 			exercises = JsonConvert.DeserializeObject<PagedList<Exercise>>(cachedData);
-			return exercises;
+
+			return GetFilteredExercises(exerciseParameters, exercises, out filteredExercises);
+		}
+
+		private static PagedList<Exercise> GetFilteredExercises(ExerciseParameters exerciseParameters, PagedList<Exercise>? exercises, out IQueryable<Exercise>? filteredExercises)
+		{
+			filteredExercises = exercises
+				.AsQueryable()
+				.FilterExerciseByNameOrDescription(exerciseParameters.SearchingTerm).FilterExerciseByDifficulty(exerciseParameters.DifficultyLevel);
+			return PagedList<Exercise>.ToPagedListForFilteredData(filteredExercises, exerciseParameters.PageNumber, exerciseParameters.PageSize);
 		}
 
 		public async Task<Exercise?> GetOneExerciseByIdAsync(int id, bool trackChanges)

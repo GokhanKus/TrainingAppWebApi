@@ -39,7 +39,6 @@ namespace Entities.RequestFeatures
 		{
 			var count = source.Count();
 			var items = source
-				.Take(count)
 				.ToList();
 			return new PagedList<T>(items, count, pageNumber, pageSize);
 		}
