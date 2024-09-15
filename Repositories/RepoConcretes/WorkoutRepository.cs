@@ -24,11 +24,10 @@ namespace Repositories.RepoConcretes
 			Delete(workout);
 		}
 
-		public async Task<PagedList<Workout>?> GetAllWorkoutsByUserIdAsync(WorkoutParameters workoutParameters, string userId, bool trackChanges)
+		public async Task<IEnumerable<Workout>?> GetAllWorkoutsByUserIdAsync(WorkoutParameters workoutParameters, string userId, bool trackChanges)
 		{
 			var allWorkouts = await GetAllByConditionAsync(w => w.UserId == userId, trackChanges);
-			return PagedList<Workout>.ToPagedList(allWorkouts, workoutParameters.PageNumber, workoutParameters.PageSize);
-			//return await GetAllByConditionAsync(w => w.UserId == userId, trackChanges);
+			return allWorkouts;
 		}
 
 		public async Task<Workout?> GetOneWorkoutByUserIdAsync(int id, string userId, bool trackChanges)

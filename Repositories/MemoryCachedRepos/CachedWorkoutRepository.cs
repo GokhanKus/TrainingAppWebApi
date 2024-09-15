@@ -33,7 +33,7 @@ namespace Repositories.MemoryCachedRepos
 			_memoryCache.Remove($"WorkoutWithExercises{userId}_{workout.Id}");
 		}
 
-		public async Task<PagedList<Workout>?> GetAllWorkoutsByUserIdAsync(WorkoutParameters workoutParameters, string userId, bool trackChanges)
+		public async Task<IEnumerable<Workout>?> GetAllWorkoutsByUserIdAsync(WorkoutParameters workoutParameters, string userId, bool trackChanges)
 		{
 			var cacheKey = $"AllWorkoutsByUserId_{userId}";
 			var workouts = await _memoryCache.GetOrCreateAsync(cacheKey, entry =>
@@ -64,11 +64,6 @@ namespace Repositories.MemoryCachedRepos
 				return _decorated.GetOneWorkoutWithExercises(id, userId);
 			});
 			return workoutWithExercises;
-		}
-
-		public Task<int> WorkoutCountAsync(string userId)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

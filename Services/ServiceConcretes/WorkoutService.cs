@@ -48,6 +48,9 @@ namespace Services.ServiceConcretes
 		}
 		public async Task<IEnumerable<ExpandoObject>?> GetAllWorkoutByUserIdAsync(WorkoutParameters workoutParameters, string userId, bool trackChanges)
 		{
+			if (!workoutParameters.IsValid)
+				throw new DurationOrCaloriesBurnedOutOfRangeBadRequestException();
+
 			if (userId is null)
 				throw new ArgumentNullException($"any workout could not found which is belong to the user with {userId}");
 

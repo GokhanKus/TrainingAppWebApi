@@ -6,7 +6,7 @@ namespace Repositories.Extensions
 	{
 		public static IQueryable<BodyMeasurement> FilterBodyMeasurementsByWeight(this IQueryable<BodyMeasurement> bodyMeasurements, uint? minWeight, uint? maxWeight)
 		{
-			if ((minWeight == 0 || minWeight is null) && (minWeight == 0 || minWeight is null))
+			if ((minWeight == 0 || minWeight is null) && (maxWeight == 0 || maxWeight is null))
 				return bodyMeasurements;
 
 			var filteredBodyMeasurement = bodyMeasurements.Where(b => ((b.Weight >= minWeight) && b.Weight <= maxWeight));

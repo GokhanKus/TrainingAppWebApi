@@ -1,0 +1,24 @@
+﻿using Entities.Models;
+
+namespace Repositories.Extensions
+{
+	public static class WorkoutRepositoryExtension
+	{
+		public static IQueryable<Workout> FilterWorkoutByDuration(this IQueryable<Workout> workouts, uint? minDuration, uint? maxDuration)
+		{
+			if ((minDuration == 0 || minDuration is null) && (maxDuration == 0 || maxDuration is null))
+				return workouts;
+
+			var filteredWorkouts = workouts.Where(w => w.Duration > minDuration && w.Duration <= maxDuration);
+			return filteredWorkouts;
+		}
+		public static IQueryable<Workout> FilterWorkoutByCaloriesBurned(this IQueryable<Workout> workouts, uint? minCaloriesBurned, uint? maxCaloriesBurned)
+		{
+			if ((minCaloriesBurned == 0 || minCaloriesBurned is null) && (maxCaloriesBurned == 0 || maxCaloriesBurned is null))
+				return workouts;
+
+			var filteredWorkouts = workouts.Where(w => w.Duration > minCaloriesBurned && w.Duration <= maxCaloriesBurned);
+			return filteredWorkouts;
+		}
+	}
+}
