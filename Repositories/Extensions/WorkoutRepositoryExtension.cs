@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using System.Linq.Dynamic.Core;
 
 namespace Repositories.Extensions
 {
@@ -19,6 +20,18 @@ namespace Repositories.Extensions
 
 			var filteredWorkouts = workouts.Where(w => w.Duration > minCaloriesBurned && w.Duration <= maxCaloriesBurned);
 			return filteredWorkouts;
+		}
+		public static IQueryable<Workout> Sort(this IQueryable<Workout> workouts, string? orderByQueryString)
+		{
+			if (string.IsNullOrEmpty(orderByQueryString))
+				return workouts.OrderBy(b => b.Id);
+
+			var orderQuery = OrderQueryBuilder.CreateOrderQuery<Workout>(orderByQueryString);
+
+			if (string.IsNullOrEmpty(orderQuery))
+				return workouts.OrderBy(b => b.Id);
+
+			return workouts.OrderBy(orderQuery);
 		}
 	}
 }

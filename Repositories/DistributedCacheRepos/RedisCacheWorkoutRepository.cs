@@ -53,7 +53,8 @@ namespace Repositories.DistributedCacheRepos
 			var filteredWorkouts = workouts
 							.AsQueryable()
 							.FilterWorkoutByCaloriesBurned(workoutParameters.MinCaloriesBurned, workoutParameters.MaxCaloriesBurned)
-							.FilterWorkoutByDuration(workoutParameters.MinDuration, workoutParameters.MaxDuration);
+							.FilterWorkoutByDuration(workoutParameters.MinDuration, workoutParameters.MaxDuration)
+							.Sort(workoutParameters.OrderBy);
 
 			return PagedList<Workout>.ToPagedList(filteredWorkouts, workoutParameters.PageNumber, workoutParameters.PageSize);
 		}
