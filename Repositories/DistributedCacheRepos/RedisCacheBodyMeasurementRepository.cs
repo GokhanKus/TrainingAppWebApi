@@ -52,7 +52,8 @@ namespace Repositories.DistributedCacheRepos
 		{
 			var filteredBodyMeasurements = measurements
 							.AsQueryable()
-							.FilterBodyMeasurementsByWeight(bodyMeasurementParameters.MinWeight, bodyMeasurementParameters.MaxWeight);
+							.FilterBodyMeasurementsByWeight(bodyMeasurementParameters.MinWeight, bodyMeasurementParameters.MaxWeight)
+							.Sort(bodyMeasurementParameters.OrderBy);
 
 			return PagedList<BodyMeasurement>.ToPagedList(filteredBodyMeasurements, bodyMeasurementParameters.PageNumber, bodyMeasurementParameters.PageSize);
 		}

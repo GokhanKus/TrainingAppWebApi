@@ -7,12 +7,13 @@
 		public int PageNumber { get; set; } = 1;
 		//full-property
 		private int _pageSize = DefaultPageSize;
-        public int PageSize
+		public int PageSize
 		{
 			get { return _pageSize; }
 			set { _pageSize = value > maxPageSize ? maxPageSize : value; }
 			//value 50den buyukse(istemci 50'den fazla kaynak isterse max 50, 50'den kucukse istenilen deger gelsin)
 		}
 		public string? Fields { get; set; }
+		public string? OrderBy { get; set; }
 	}
 }

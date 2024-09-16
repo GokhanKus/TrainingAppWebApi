@@ -5,7 +5,7 @@ namespace Repositories.Extensions
 {
 	public static class ExerciseRepositoryExtension
 	{
-		public static IQueryable<Exercise> FilterExerciseByNameOrDescription(this IQueryable<Exercise> exercises, string searchingTerm)
+		public static IQueryable<Exercise> Search(this IQueryable<Exercise> exercises, string searchingTerm)
 		{
 			if (string.IsNullOrEmpty(searchingTerm))
 				return exercises;
