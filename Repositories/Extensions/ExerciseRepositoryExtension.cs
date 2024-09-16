@@ -1,5 +1,6 @@
 ﻿using Entities.Enums;
 using Entities.Models;
+using System.Linq.Dynamic.Core;
 
 namespace Repositories.Extensions
 {
@@ -21,6 +22,18 @@ namespace Repositories.Extensions
 
 			var filteredExercises = exercises.Where(e => e.Difficulty == difficultyLevel);
 			return filteredExercises;
+		}
+		public static IQueryable<Exercise> Sort(this IQueryable<Exercise> exercises, string? orderByQueryString)
+		{
+			if (string.IsNullOrEmpty(orderByQueryString))
+				return exercises.OrderBy(b => b.Id);
+
+			var orderQuery = OrderQueryBuilder.CreateOrderQuery<Exercise>(orderByQueryString);
+
+			if (string.IsNullOrEmpty(orderQuery))
+				return exercises.OrderBy(b => b.Id);
+
+			return exercises.OrderBy(orderQuery);
 		}
 	}
 }

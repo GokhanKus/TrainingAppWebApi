@@ -19,17 +19,25 @@ namespace Repositories.Extensions
 				if (string.IsNullOrEmpty(param))
 					continue;
 
-				var propertyFromQueryName = param.Split(' ')[0];
+				// Her bir parametreyi boşluklardan temizleyerek ayırıyoruz
+				var paramParts = param.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+				var propertyFromQueryName = paramParts[0]; // Property ismini alıyoruz
 
 				var objectProperty = propertyInfos
-					.FirstOrDefault(pi => pi.Name.Equals(propertyFromQueryName, StringComparison.InvariantCultureIgnoreCase));
+			   .FirstOrDefault(pi => pi.Name.Equals(propertyFromQueryName, StringComparison.InvariantCultureIgnoreCase));
 
 				if (objectProperty is null)
 					continue;
 
-				var direction = param.EndsWith(" desc") ? "descending" : "ascending";
-				orderQueryBuilder.Append($"{objectProperty.Name.ToString()} {direction},");
+				// Eğer "desc" varsa, descending, yoksa ascending yapıyoruz
+				var direction = (paramParts.Length > 1 && paramParts[1].Equals("desc", StringComparison.InvariantCultureIgnoreCase))
+					? "descending"
+					: "ascending";
+
+				orderQueryBuilder.Append($"{objectProperty.Name} {direction},");
 			}
+
+			// Sondaki virgülü temizliyoruz
 			var orderQuery = orderQueryBuilder.ToString().TrimEnd(',', ' ');
 			return orderQuery;
 		}

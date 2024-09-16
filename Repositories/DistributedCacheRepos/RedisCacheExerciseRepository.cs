@@ -53,7 +53,8 @@ namespace Repositories.DistributedCacheRepos
 			var filteredExercises = exercises
 				.AsQueryable()
 				.FilterExerciseByDifficulty(exerciseParameters.DifficultyLevel)
-				.Search(exerciseParameters.SearchingTerm);
+				.Search(exerciseParameters.SearchingTerm)
+				.Sort(exerciseParameters.OrderBy);
 
 			return PagedList<Exercise>.ToPagedList(filteredExercises, exerciseParameters.PageNumber, exerciseParameters.PageSize);
 		}

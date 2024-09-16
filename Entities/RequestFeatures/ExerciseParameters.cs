@@ -6,5 +6,9 @@ namespace Entities.RequestFeatures
 	{
         public string? SearchingTerm { get; set; }
         public DifficultyLevel? DifficultyLevel{ get; set; }
+        public ExerciseParameters()
+        {
+            OrderBy = "id";
+        }
     }
 }
