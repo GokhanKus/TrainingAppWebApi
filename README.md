@@ -14,7 +14,6 @@ This project is a web API designed to manage and track workout routines, body me
    </tr>   
 </table>
 
-
 <table>
   <tr>
       <td>
@@ -29,6 +28,17 @@ This project is a web API designed to manage and track workout routines, body me
     </td>
   </tr>
 </table>
+
+## **Screenshots Class Diagram (Repositories) (UoW)**
+![image](https://github.com/user-attachments/assets/682a871c-d4be-48f7-8c3a-e0bdad984374)
+![image](https://github.com/user-attachments/assets/b3ae2bd0-0e73-4064-a4a5-70997ee7d1b0)
+
+## **Screenshots Class Diagram (Services)**
+![image](https://github.com/user-attachments/assets/5ee1824c-6bdd-488b-851f-1d4b5556fe62)
+
+## **Screenshots Class Diagram Entity (Relational Database Diagram)**
+![image](https://github.com/user-attachments/assets/7939528f-cff1-4b79-bb47-4818e74b1306)
+
 
 ## Screenshots for BodyMeasurement;
 ![image](https://github.com/user-attachments/assets/1a4716e7-0361-4d5d-bf4a-10c911b62369)
