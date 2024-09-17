@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Repositories.RepoConcretes.BodyMeasurementRepository">
+    <Position X="0.5" Y="8.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAQAAABAAAAAQIAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RepoConcretes\BodyMeasurementRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.RepoConcretes.ExerciseCategoryRepository">
+    <Position X="3.75" Y="8.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAiIAAAAAEAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>RepoConcretes\ExerciseCategoryRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.RepoConcretes.ExerciseRepository">
+    <Position X="7.25" Y="8.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gMAAAAgAAAAAAAAAAEAAAAAAAAAAAAAAAAAQAQAAAAA=</HashCode>
+      <FileName>RepoConcretes\ExerciseRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.RepoConcretes.WorkoutRepository">
+    <Position X="10.5" Y="8.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAACAMAAAAACAAAICA=</HashCode>
+      <FileName>RepoConcretes\WorkoutRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.DistributedCacheRepos.RedisCacheBodyMeasurementRepository">
+    <Position X="0.5" Y="2.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAQAAAAAAABAQIAEABAAAAAAAAAAACBAAAAAgAA=</HashCode>
+      <FileName>DistributedCacheRepos\RedisCacheBodyMeasurementRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.DistributedCacheRepos.RedisCacheExerciseCategoryRepository">
+    <Position X="3.75" Y="3" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAABAAAiIAAAAAEAAAAgAAABACAAAgAA=</HashCode>
+      <FileName>DistributedCacheRepos\RedisCacheExerciseCategoryRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.DistributedCacheRepos.RedisCacheExerciseRepository">
+    <Position X="7.25" Y="3" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gMAAAAgAAAAAAQBAAEAAAAAAAAAAAAAAACBQAAAAgAA=</HashCode>
+      <FileName>DistributedCacheRepos\RedisCacheExerciseRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.DistributedCacheRepos.RedisCacheWorkoutRepository">
+    <Position X="10.5" Y="2.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAABAAAAAAAAAAAAACAEAACBACAAAoCA=</HashCode>
+      <FileName>DistributedCacheRepos\RedisCacheWorkoutRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.UnitOfWork.UnitOfWork">
+    <Position X="13.25" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACABAAACAABEBAIAAAQAAQAAAAAAAAAAAAAQAEAAA=</HashCode>
+      <FileName>UnitOfWork\UnitOfWork.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.MemoryCachedRepos.CachedBodyMeasurementRepository" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAQAgAAAAABAQIAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MemoryCachedRepos\CachedBodyMeasurementRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.MemoryCachedRepos.CachedExerciseCategoryRepository" Collapsed="true">
+    <Position X="3.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAgAAAAABAAAiIAAAAAEAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>MemoryCachedRepos\CachedExerciseCategoryRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.MemoryCachedRepos.CachedExerciseRepository" Collapsed="true">
+    <Position X="7.25" Y="6.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gMAAAAgAgAAAAABAAEAAAAAAAAAAAAAAAAAQAQAAAAA=</HashCode>
+      <FileName>MemoryCachedRepos\CachedExerciseRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.MemoryCachedRepos.CachedWorkoutRepository" Collapsed="true">
+    <Position X="10.5" Y="6.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAABAAAAAAAAAAAAACAEAAAAACAAAICA=</HashCode>
+      <FileName>MemoryCachedRepos\CachedWorkoutRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.RepoBases.BaseRepository&lt;TEntity&gt;">
+    <Position X="5" Y="11.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAAAAAAABAAAAAAAKAEAAAEAAAAAAAAAAAgAAQA=</HashCode>
+      <FileName>RepoBases\BaseRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Repositories.RepoConcretes.IBodyMeasurementRepository">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAQAAAAAAAAAQIAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RepoContracts\IBodyMeasurementRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Repositories.RepoConcretes.IExerciseCategoryRepository">
+    <Position X="3.75" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAiIAAAAAEAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>RepoContracts\IExerciseCategoryRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Repositories.RepoConcretes.IExerciseRepository">
+    <Position X="7.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gMAAAAgAAAAAAAAAAEAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>RepoContracts\IExerciseRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Repositories.RepoConcretes.IWorkoutRepository">
+    <Position X="10.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACAEAAAAACAAAICA=</HashCode>
+      <FileName>RepoContracts\IWorkoutRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Repositories.UnitOfWork.IUnitOfWork">
+    <Position X="13.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAIAAAAAAAAAAAAAAAAAAAAQAEAAA=</HashCode>
+      <FileName>UnitOfWork\IUnitOfWork.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Repositories.RepoBases.IBaseRepository&lt;TEntity&gt;">
+    <Position X="8.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAAAAAAAAAAAAAAACAEAAAEAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>RepoBases\IBaseRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
